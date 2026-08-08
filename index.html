@@ -21,7 +21,7 @@
   </header>
 
   <!-- Progress -->
-  <div class="flex gap-1.5 px-6 pt-5">
+  <div id="progress-bar" class="hidden flex gap-1.5 px-6 pt-5">
     <div id="prog-1" class="h-1 flex-1 rounded-full bg-gray-900"></div>
     <div id="prog-2" class="h-1 flex-1 rounded-full bg-gray-200"></div>
     <div id="prog-3" class="h-1 flex-1 rounded-full bg-gray-200"></div>
@@ -29,8 +29,28 @@
 
   <main class="px-6 py-6">
 
+    <!-- STEP 0: Boas-vindas -->
+    <section id="step-welcome" class="step text-center py-8">
+      <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 flex items-center justify-center mb-6">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6">
+          <path d="M5 17h14M6 17V9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8M9 7l1-3h4l1 3"/>
+          <circle cx="8" cy="17" r="1.6" fill="white" stroke="none"/>
+          <circle cx="16" cy="17" r="1.6" fill="white" stroke="none"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">Bem-vindo(a)</h2>
+      <p class="text-sm text-gray-500 px-4 mb-8 leading-relaxed">
+        Transporte executivo com hora marcada, conforto e pontualidade —
+        transfers, viagens e eventos com o Osvair, em um VW Jetta 2019.
+        Escolha a data, envie os detalhes e receba seu orçamento pelo WhatsApp.
+      </p>
+      <button id="btn-start" class="w-full bg-gray-900 text-white font-medium py-3.5 rounded-xl">
+        Solicitar agendamento
+      </button>
+    </section>
+
     <!-- STEP 1: Data e Horario -->
-    <section id="step-datetime" class="step">
+    <section id="step-datetime" class="step hidden">
       <h2 class="text-lg font-semibold text-gray-900 mb-1">Escolha data e horário</h2>
       <p class="text-sm text-gray-500 mb-5">Selecione o dia e um horário disponível para o seu transfer.</p>
 

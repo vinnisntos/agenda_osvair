@@ -112,14 +112,18 @@
 
   // -------------------- Navegacao entre etapas --------------------
   function goToStep(step) {
-    ['step-datetime', 'step-form', 'step-success'].forEach((id) => el(id).classList.add('hidden'));
+    ['step-welcome', 'step-datetime', 'step-form', 'step-success'].forEach((id) => el(id).classList.add('hidden'));
     el(step).classList.remove('hidden');
+
     const progMap = { 'step-datetime': 1, 'step-form': 2, 'step-success': 3 };
+    el('progress-bar').classList.toggle('hidden', !progMap[step]);
     for (let i = 1; i <= 3; i++) {
-      el(`prog-${i}`).className = `h-1 flex-1 rounded-full ${i <= progMap[step] ? 'bg-gray-900' : 'bg-gray-200'}`;
+      el(`prog-${i}`).className = `h-1 flex-1 rounded-full ${i <= (progMap[step] || 0) ? 'bg-gray-900' : 'bg-gray-200'}`;
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  el('btn-start').addEventListener('click', () => goToStep('step-datetime'));
 
   function formatDateTimeLabel(date, time) {
     return `${DIAS_SEMANA[date.getDay()]}, ${date.getDate()} ${MESES[date.getMonth()]} · ${time}`;
