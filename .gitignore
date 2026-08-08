@@ -1,0 +1,6 @@
+# Configuracao com chaves reais - nunca commitar. Use config/appsettings.example.json como modelo.
+config/appsettings.json
+
+.env
+.DS_Store
+Thumbs.db

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --graphite-950: #0a0a0a;
+  --graphite-900: #161616;
+  --graphite-800: #232323;
+  --graphite-700: #333333;
+  --graphite-500: #6b6b6b;
+  --graphite-300: #b8b8b8;
+  --graphite-100: #ededed;
+}
+
+html, body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f7f7f6;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Barra de rolagem discreta */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--graphite-300); border-radius: 3px; }
+
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #fff;
+  box-shadow: 0 0 40px rgba(0,0,0,0.04);
+}
+
+.step {
+  animation: fadeIn .25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slot-btn {
+  transition: all .15s ease;
+}
+.slot-btn:disabled {
+  opacity: .35;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.cal-day {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: .875rem;
+  transition: all .15s ease;
+}
+.cal-day:not(:disabled):hover {
+  background: var(--graphite-100);
+}
+.cal-day.selected {
+  background: var(--graphite-950);
+  color: #fff;
+  font-weight: 600;
+}
+.cal-day:disabled {
+  color: #cfcfcf;
+  cursor: not-allowed;
+}
+.cal-day.today:not(.selected) {
+  box-shadow: inset 0 0 0 1.5px var(--graphite-950);
+  font-weight: 600;
+}
+
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.badge-solicitado        { background:#e8eef4; color:#2b5a8a; }
+.badge-orcamento_enviado { background:#f3f0e6; color:#8a6d00; }
+.badge-confirmado        { background:#e6f0ea; color:#1f6b3f; }
+.badge-concluido         { background:#e9e9e9; color:#3a3a3a; }
+.badge-recusado,
+.badge-cancelado         { background:#f4e6e6; color:#8a1f1f; }
+
+.tab-btn { background:#f3f3f2; color:#6b6b6b; }
+.tab-btn.active { background:#0a0a0a; color:#fff; }
+
+.card-agendamento {
+  border: 1px solid #f0f0ef;
+  border-radius: .875rem;
+  padding: 1rem;
+}
+.action-btn {
+  font-size: .8rem;
+  font-weight: 500;
+  padding: .5rem .875rem;
+  border-radius: .625rem;
+}
