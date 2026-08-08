@@ -117,6 +117,20 @@
     return `${window.location.origin}/orcamento.html?id=${b.id}&token=${b.aprovacao_token}`;
   }
 
+  function buildOrcamentoWhatsAppLink(row) {
+    const msg = [
+      `Olá ${row.nome_completo}! Segue o orçamento do seu transporte:`,
+      ``,
+      `Data/Horário: ${fmtData(row.data)} às ${row.horario.slice(0,5)}`,
+      `Valor: ${fmtMoeda(row.orcamento_valor)}`,
+      row.orcamento_observacoes ? `Obs: ${row.orcamento_observacoes}` : null,
+      ``,
+      `Para confirmar, aprove pelo link abaixo:`,
+      aprovacaoLink(row)
+    ].filter(Boolean).join('\n');
+    return `https://wa.me/${row.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`;
+  }
+
   function renderList() {
     const filtered = allBookings.filter((b) => matchesTab(b.status, currentTab));
     el('list-empty').classList.toggle('hidden', filtered.length > 0);
@@ -144,6 +158,7 @@
           <a href="https://wa.me/${b.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener"
             class="action-btn bg-gray-100 text-gray-700">WhatsApp</a>
           ${actionsFor(b)}
+          <button data-delete class="action-btn bg-gray-100 text-red-600">Excluir</button>
         </div>
       `;
       wireActions(card, b);
@@ -208,6 +223,35 @@
         setTimeout(() => { copyLinkBtn.textContent = original; }, 1500);
       });
     }
+
+    const deleteBtn = card.querySelector('[data-delete]');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', () => {
+        const confirmWrap = document.createElement('span');
+        confirmWrap.className = 'inline-flex items-center gap-2';
+        confirmWrap.innerHTML = `
+          <span class="text-xs text-gray-500">Excluir de vez?</span>
+          <button data-confirm-delete class="action-btn bg-red-600 text-white">Sim, excluir</button>
+          <button data-cancel-delete class="action-btn bg-gray-100 text-gray-700">Cancelar</button>
+        `;
+        deleteBtn.replaceWith(confirmWrap);
+
+        confirmWrap.querySelector('[data-cancel-delete]').addEventListener('click', () => {
+          confirmWrap.replaceWith(deleteBtn);
+        });
+        confirmWrap.querySelector('[data-confirm-delete]').addEventListener('click', async (e) => {
+          e.target.disabled = true;
+          const { error } = await window.sb.from('agendamentos').delete().eq('id', booking.id);
+          if (error) {
+            console.error(error);
+            alert('Não foi possível excluir.');
+            confirmWrap.replaceWith(deleteBtn);
+            return;
+          }
+          await loadBookings();
+        });
+      });
+    }
   }
 
   // -------------------- Enviar orçamento --------------------
@@ -245,21 +289,105 @@
       return;
     }
 
-    const link = aprovacaoLink(data);
-    const msg = [
-      `Olá ${data.nome_completo}! Segue o orçamento do seu transporte:`,
-      ``,
-      `Data/Horário: ${fmtData(data.data)} às ${data.horario.slice(0,5)}`,
-      `Valor: ${fmtMoeda(data.orcamento_valor)}`,
-      observacoes ? `Obs: ${observacoes}` : null,
-      ``,
-      `Para confirmar, aprove pelo link abaixo:`,
-      link
-    ].filter(Boolean).join('\n');
-
-    window.open(`https://wa.me/${data.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(buildOrcamentoWhatsAppLink(data), '_blank');
 
     el('modal-orcamento').classList.add('hidden');
+    await loadBookings();
+  });
+
+  // -------------------- Novo agendamento manual --------------------
+  el('btn-novo-agendamento').addEventListener('click', () => {
+    el('manual-form').reset();
+    el('manual-error').classList.add('hidden');
+    el('modal-manual').classList.remove('hidden');
+  });
+  el('btn-close-modal-manual').addEventListener('click', () => el('modal-manual').classList.add('hidden'));
+
+  function readManualForm() {
+    const fd = new FormData(el('manual-form'));
+    const base = {
+      nome_completo: (fd.get('nome_completo') || '').trim(),
+      whatsapp: (fd.get('whatsapp') || '').trim(),
+      origem: (fd.get('origem') || '').trim(),
+      destino: (fd.get('destino') || '').trim(),
+      data: fd.get('data'),
+      horario: fd.get('horario'),
+      passageiros: parseInt(fd.get('passageiros'), 10),
+      malas: parseInt(fd.get('malas'), 10),
+      observacoes: (fd.get('observacoes') || '').trim() || null
+    };
+    if (!base.nome_completo || !base.whatsapp || !base.origem || !base.destino || !base.data || !base.horario) {
+      return { fieldsError: 'Preencha nome, WhatsApp, origem, destino, data e horário.' };
+    }
+    const valorRaw = fd.get('valor');
+    return {
+      base,
+      valor: valorRaw ? parseFloat(valorRaw) : null,
+      orcamentoObservacoes: (fd.get('orcamento_observacoes') || '').trim() || null
+    };
+  }
+
+  function showManualError(msg) {
+    const errorEl = el('manual-error');
+    errorEl.textContent = msg;
+    errorEl.classList.remove('hidden');
+  }
+
+  el('btn-manual-confirmar').addEventListener('click', async () => {
+    el('manual-error').classList.add('hidden');
+    const parsed = readManualForm();
+    if (parsed.fieldsError) { showManualError(parsed.fieldsError); return; }
+
+    const payload = { ...parsed.base, status: 'confirmado' };
+    if (parsed.valor != null) payload.orcamento_valor = parsed.valor;
+    if (parsed.orcamentoObservacoes) payload.orcamento_observacoes = parsed.orcamentoObservacoes;
+
+    const btn = el('btn-manual-confirmar');
+    btn.disabled = true;
+    const { error } = await window.sb.from('agendamentos').insert(payload);
+    btn.disabled = false;
+
+    if (error) {
+      console.error(error);
+      showManualError(error.code === '23505'
+        ? 'Já existe um agendamento confirmado nesse mesmo dia/horário.'
+        : 'Não foi possível salvar. Tente novamente.');
+      return;
+    }
+
+    el('modal-manual').classList.add('hidden');
+    setActiveTab('confirmado');
+    await loadBookings();
+  });
+
+  el('btn-manual-orcamento').addEventListener('click', async () => {
+    el('manual-error').classList.add('hidden');
+    const parsed = readManualForm();
+    if (parsed.fieldsError) { showManualError(parsed.fieldsError); return; }
+    if (parsed.valor == null) { showManualError('Informe o valor do orçamento para enviar pelo WhatsApp.'); return; }
+
+    const payload = {
+      ...parsed.base,
+      status: 'orcamento_enviado',
+      orcamento_valor: parsed.valor,
+      orcamento_observacoes: parsed.orcamentoObservacoes
+    };
+
+    const btn = el('btn-manual-orcamento');
+    btn.disabled = true;
+    const { data, error } = await window.sb.from('agendamentos').insert(payload).select().single();
+    btn.disabled = false;
+
+    if (error) {
+      console.error(error);
+      showManualError('Não foi possível salvar. Tente novamente.');
+      return;
+    }
+
+    window.open(buildOrcamentoWhatsAppLink(data), '_blank');
+
+    el('modal-manual').classList.add('hidden');
+    setActiveTab('orcamento_enviado');
     await loadBookings();
   });
 

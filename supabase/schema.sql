@@ -96,6 +96,15 @@ create policy "anon pode inserir solicitacao"
   to anon
   with check (status = 'solicitado');
 
+-- Admin tambem pode criar agendamentos manualmente (cliente por telefone,
+-- corrida propria, orcamento manual) direto do painel.
+drop policy if exists "admin pode inserir agendamentos" on public.agendamentos;
+create policy "admin pode inserir agendamentos"
+  on public.agendamentos
+  for insert
+  to authenticated
+  with check (true);
+
 -- Apenas o admin logado (authenticated) pode ver/gerenciar os agendamentos
 drop policy if exists "admin pode ver agendamentos" on public.agendamentos;
 create policy "admin pode ver agendamentos"
