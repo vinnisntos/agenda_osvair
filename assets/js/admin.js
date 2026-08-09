@@ -175,6 +175,7 @@
     }
     if (b.status === 'orcamento_enviado') {
       return `
+        <button data-resend-orcamento class="action-btn bg-gray-100 text-gray-700">Reenviar orçamento</button>
         <button data-copy-link class="action-btn bg-gray-100 text-gray-700">Copiar link</button>
         <button data-action="confirmado" class="action-btn bg-gray-900 text-white">Cliente aprovou</button>
         <button data-action="recusado" class="action-btn bg-red-50 text-red-600">Cliente recusou</button>
@@ -212,6 +213,13 @@
     const openOrcamentoBtn = card.querySelector('[data-open-orcamento]');
     if (openOrcamentoBtn) {
       openOrcamentoBtn.addEventListener('click', () => openOrcamentoModal(booking));
+    }
+
+    const resendOrcamentoBtn = card.querySelector('[data-resend-orcamento]');
+    if (resendOrcamentoBtn) {
+      resendOrcamentoBtn.addEventListener('click', () => {
+        window.open(buildOrcamentoWhatsAppLink(booking), '_blank');
+      });
     }
 
     const copyLinkBtn = card.querySelector('[data-copy-link]');
