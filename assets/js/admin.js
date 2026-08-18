@@ -193,11 +193,31 @@
   function wireActions(card, booking) {
     card.querySelectorAll('[data-action]').forEach((btn) => {
       btn.addEventListener('click', async () => {
+        const action = btn.dataset.action;
+        let valorConclusao = booking.orcamento_valor;
+
+        if (action === 'concluido' && valorConclusao == null) {
+          const input = prompt('Informe o valor final da corrida (R$) para registrar no financeiro:');
+          if (input === null) return;
+          valorConclusao = parseFloat(input.replace(',', '.'));
+          if (isNaN(valorConclusao) || valorConclusao < 0) {
+            alert('Valor inválido.');
+            return;
+          }
+        }
+
         btn.disabled = true;
+
+        const updatePayload = { status: action };
+        if (action === 'concluido' && booking.orcamento_valor == null) {
+          updatePayload.orcamento_valor = valorConclusao;
+        }
+
         const { error } = await window.sb
           .from('agendamentos')
-          .update({ status: btn.dataset.action })
+          .update(updatePayload)
           .eq('id', booking.id);
+
         if (error) {
           console.error(error);
           alert(error.code === '23505'
@@ -206,6 +226,26 @@
           btn.disabled = false;
           return;
         }
+
+        if (action === 'concluido') {
+          const { error: ganhoError } = await window.sb
+            .from('ganhos')
+            .upsert({
+              agendamento_id: booking.id,
+              categoria: 'particular',
+              tipo_corrida: null,
+              data: booking.data,
+              partida: booking.origem,
+              chegada: booking.destino,
+              valor: valorConclusao,
+              observacoes: booking.nome_completo
+            }, { onConflict: 'agendamento_id' });
+          if (ganhoError) {
+            console.error(ganhoError);
+            alert('Corrida concluída, mas não foi possível registrar o ganho no financeiro. Adicione manualmente por lá.');
+          }
+        }
+
         await loadBookings();
       });
     });

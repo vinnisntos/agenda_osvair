@@ -311,6 +311,18 @@ create table if not exists public.ganhos (
 
 comment on table public.ganhos is 'Receitas: corridas particulares e corridas/dias trabalhados na Uber.';
 
+-- Vincula o ganho ao agendamento de origem quando a corrida foi concluida
+-- direto pela agenda (evita registrar o mesmo agendamento duas vezes: o
+-- unique permite reaproveitar o mesmo vinculo se o admin marcar "Concluir"
+-- mais de uma vez, e remove o ganho automaticamente se o agendamento for
+-- excluido).
+alter table public.ganhos add column if not exists agendamento_id uuid references public.agendamentos(id) on delete cascade;
+
+alter table public.ganhos drop constraint if exists ganhos_agendamento_id_key;
+alter table public.ganhos add constraint ganhos_agendamento_id_key unique (agendamento_id);
+
+create index if not exists idx_ganhos_agendamento_id on public.ganhos (agendamento_id);
+
 alter table public.ganhos drop constraint if exists ganhos_categoria_check;
 alter table public.ganhos add constraint ganhos_categoria_check
   check (categoria in ('particular', 'uber'));

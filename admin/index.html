@@ -141,6 +141,14 @@
         <p class="fin-card-label">Dias não trabalhados</p>
         <p id="fin-dias-nao-trabalhados" class="fin-card-value text-gray-400">0</p>
       </div>
+      <div class="fin-card">
+        <p class="fin-card-label">Orçamentos pendentes</p>
+        <p id="fin-pendentes" class="fin-card-value text-amber-600">0</p>
+      </div>
+      <div class="fin-card">
+        <p class="fin-card-label">Recusados/cancelados</p>
+        <p id="fin-recusados" class="fin-card-value text-red-700">0</p>
+      </div>
     </section>
 
     <!-- Grafico -->
@@ -151,6 +159,8 @@
         <label class="series-toggle"><input type="checkbox" data-series="gastos" checked><span class="dot" style="background:#c0392b"></span>Gastos</label>
         <label class="series-toggle"><input type="checkbox" data-series="liquido" checked><span class="dot" style="background:#1f6b3f"></span>Líquido</label>
         <label class="series-toggle"><input type="checkbox" data-series="naoTrabalhado"><span class="dot" style="background:#d0d0d0"></span>Dias não trabalhados</label>
+        <label class="series-toggle"><input type="checkbox" data-series="pendentes"><span class="dot" style="background:#d97706"></span>Orçamentos pendentes</label>
+        <label class="series-toggle"><input type="checkbox" data-series="recusados"><span class="dot" style="background:#8a1f1f"></span>Recusados/cancelados</label>
       </div>
       <div class="border border-gray-100 rounded-xl p-3">
         <canvas id="fin-chart" height="220"></canvas>

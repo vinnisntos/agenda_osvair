@@ -6,11 +6,18 @@
     fim: null,
     gastos: [],
     ganhos: [],
+    agendamentos: [],
     activeListTab: 'ganhos',
     chart: null,
-    seriesVisible: { particular: true, uber: true, gastos: true, liquido: true, naoTrabalhado: false },
+    seriesVisible: {
+      particular: true, uber: true, gastos: true, liquido: true,
+      naoTrabalhado: false, pendentes: false, recusados: false
+    },
     initialized: false
   };
+
+  const STATUS_PENDENTE = ['solicitado', 'orcamento_enviado'];
+  const STATUS_RECUSADO = ['recusado', 'cancelado'];
 
   const CATEGORIA_GASTO_LABEL = { combustivel: 'Combustível', manutencao: 'Manutenção', outros: 'Outros' };
   const TIPO_CORRIDA_LABEL = { cheia: 'Corrida cheia', aproveitamento: 'Aproveitamento', dia_trabalhado: 'Dia trabalhado' };
@@ -67,6 +74,8 @@
     if (!state.initialized) {
       state.initialized = true;
       applyPreset('15');
+    } else {
+      loadFinanceiro();
     }
   });
 
@@ -122,15 +131,16 @@
     el('fin-resumo').classList.add('hidden');
     el('fin-chart-section').classList.add('hidden');
 
-    const [gastosRes, ganhosRes] = await Promise.all([
+    const [gastosRes, ganhosRes, agendamentosRes] = await Promise.all([
       window.sb.from('gastos').select('*').gte('data', state.inicio).lte('data', state.fim).order('data', { ascending: true }),
-      window.sb.from('ganhos').select('*').gte('data', state.inicio).lte('data', state.fim).order('data', { ascending: true })
+      window.sb.from('ganhos').select('*').gte('data', state.inicio).lte('data', state.fim).order('data', { ascending: true }),
+      window.sb.from('agendamentos').select('id,data,status').gte('data', state.inicio).lte('data', state.fim)
     ]);
 
     el('fin-loading').classList.add('hidden');
 
-    if (gastosRes.error || ganhosRes.error) {
-      console.error(gastosRes.error || ganhosRes.error);
+    if (gastosRes.error || ganhosRes.error || agendamentosRes.error) {
+      console.error(gastosRes.error || ganhosRes.error || agendamentosRes.error);
       el('fin-loading').textContent = 'Erro ao carregar dados financeiros.';
       el('fin-loading').classList.remove('hidden');
       return;
@@ -138,6 +148,7 @@
 
     state.gastos = gastosRes.data;
     state.ganhos = ganhosRes.data;
+    state.agendamentos = agendamentosRes.data;
 
     el('fin-resumo').classList.remove('hidden');
     el('fin-chart-section').classList.remove('hidden');
@@ -157,7 +168,12 @@
     const diasTrabalhados = new Set(state.ganhos.map((g) => g.data)).size;
     const totalDias = buildDayRange(state.inicio, state.fim).length;
     const diasNaoTrabalhados = Math.max(0, totalDias - diasTrabalhados);
-    return { particularTotal, uberTotal, brutoTotal, gastosTotal, liquido, diasTrabalhados, diasNaoTrabalhados, totalDias };
+    const pendentes = state.agendamentos.filter((a) => STATUS_PENDENTE.includes(a.status)).length;
+    const recusados = state.agendamentos.filter((a) => STATUS_RECUSADO.includes(a.status)).length;
+    return {
+      particularTotal, uberTotal, brutoTotal, gastosTotal, liquido,
+      diasTrabalhados, diasNaoTrabalhados, totalDias, pendentes, recusados
+    };
   }
 
   function renderResumo() {
@@ -172,6 +188,8 @@
     liqEl.classList.toggle('text-red-600', s.liquido < 0);
     el('fin-dias-trabalhados').textContent = s.diasTrabalhados;
     el('fin-dias-nao-trabalhados').textContent = s.diasNaoTrabalhados;
+    el('fin-pendentes').textContent = s.pendentes;
+    el('fin-recusados').textContent = s.recusados;
   }
 
   // -------------------- Grafico --------------------
@@ -180,9 +198,13 @@
     const workedSet = new Set(state.ganhos.map((g) => g.data));
 
     const byDay = {};
-    days.forEach((d) => { byDay[d] = { particular: 0, uber: 0, gastos: 0 }; });
+    days.forEach((d) => { byDay[d] = { particular: 0, uber: 0, gastos: 0, pendentes: 0, recusados: 0 }; });
     state.ganhos.forEach((g) => { byDay[g.data][g.categoria] += Number(g.valor); });
     state.gastos.forEach((g) => { byDay[g.data].gastos += Number(g.valor); });
+    state.agendamentos.forEach((a) => {
+      if (STATUS_PENDENTE.includes(a.status)) byDay[a.data].pendentes += 1;
+      else if (STATUS_RECUSADO.includes(a.status)) byDay[a.data].recusados += 1;
+    });
 
     const labels = days.map((d) => fmtData(d).slice(0, 5));
     const particularData = days.map((d) => byDay[d].particular);
@@ -190,13 +212,17 @@
     const gastosData = days.map((d) => byDay[d].gastos);
     const liquidoData = days.map((d) => byDay[d].particular + byDay[d].uber - byDay[d].gastos);
     const naoTrabalhadoData = days.map((d) => (workedSet.has(d) ? null : 1));
+    const pendentesData = days.map((d) => byDay[d].pendentes);
+    const recusadosData = days.map((d) => byDay[d].recusados);
 
     const datasets = [
       { _key: 'particular', type: 'line', label: 'Ganhos particular', data: particularData, borderColor: '#2b5a8a', backgroundColor: '#2b5a8a', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.particular, order: 1 },
       { _key: 'uber', type: 'line', label: 'Ganhos Uber', data: uberData, borderColor: '#111111', backgroundColor: '#111111', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.uber, order: 1 },
       { _key: 'gastos', type: 'line', label: 'Gastos', data: gastosData, borderColor: '#c0392b', backgroundColor: '#c0392b', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.gastos, order: 1 },
       { _key: 'liquido', type: 'line', label: 'Líquido', data: liquidoData, borderColor: '#1f6b3f', backgroundColor: '#1f6b3f', borderWidth: 2.5, tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.liquido, order: 1 },
-      { _key: 'naoTrabalhado', type: 'bar', label: 'Dias não trabalhados', data: naoTrabalhadoData, backgroundColor: 'rgba(160,160,160,0.35)', yAxisID: 'y1', barPercentage: 1, categoryPercentage: 1, hidden: !state.seriesVisible.naoTrabalhado, order: 10 }
+      { _key: 'naoTrabalhado', type: 'bar', label: 'Dias não trabalhados', data: naoTrabalhadoData, backgroundColor: 'rgba(160,160,160,0.35)', yAxisID: 'y1', barPercentage: 1, categoryPercentage: 1, hidden: !state.seriesVisible.naoTrabalhado, order: 10 },
+      { _key: 'pendentes', type: 'bar', label: 'Orçamentos pendentes', data: pendentesData, backgroundColor: 'rgba(217,119,6,0.6)', yAxisID: 'yCount', hidden: !state.seriesVisible.pendentes, order: 5 },
+      { _key: 'recusados', type: 'bar', label: 'Orçamentos recusados/cancelados', data: recusadosData, backgroundColor: 'rgba(138,31,31,0.6)', yAxisID: 'yCount', hidden: !state.seriesVisible.recusados, order: 5 }
     ];
 
     if (state.chart) {
@@ -216,15 +242,24 @@
           legend: { display: false },
           tooltip: {
             callbacks: {
-              label: (ctx) => ctx.dataset._key === 'naoTrabalhado'
-                ? (ctx.raw ? 'Dia não trabalhado' : null)
-                : `${ctx.dataset.label}: ${fmtMoeda(ctx.raw)}`
+              label: (ctx) => {
+                if (ctx.dataset._key === 'naoTrabalhado') return ctx.raw ? 'Dia não trabalhado' : null;
+                if (ctx.dataset._key === 'pendentes' || ctx.dataset._key === 'recusados') return `${ctx.dataset.label}: ${ctx.raw}`;
+                return `${ctx.dataset.label}: ${fmtMoeda(ctx.raw)}`;
+              }
             }
           }
         },
         scales: {
           y: { beginAtZero: true, ticks: { callback: (v) => 'R$ ' + v } },
-          y1: { display: false, min: 0, max: 1 }
+          y1: { display: false, min: 0, max: 1 },
+          yCount: {
+            position: 'right',
+            beginAtZero: true,
+            ticks: { stepSize: 1, precision: 0 },
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: 'Qtd.' }
+          }
         }
       }
     });
@@ -263,6 +298,7 @@
           <div class="text-sm">
             <p class="text-xs text-gray-400 mb-1">${fmtData(item.data)}</p>
             <span class="badge-categoria-${item.categoria} text-xs font-medium px-2 py-0.5 rounded-full">${item.categoria === 'uber' ? 'Uber' : 'Particular'}</span>
+            ${item.agendamento_id ? `<span class="text-xs text-gray-400 ml-1">· via agenda</span>` : ''}
             ${item.tipo_corrida ? `<span class="text-xs text-gray-500 ml-1">${esc(TIPO_CORRIDA_LABEL[item.tipo_corrida] || item.tipo_corrida)}</span>` : ''}
             ${item.partida || item.chegada ? `<p class="text-gray-600 mt-1">${esc(item.partida || '—')} → ${esc(item.chegada || '—')}</p>` : ''}
             ${item.observacoes ? `<p class="text-gray-400 text-xs mt-1">${esc(item.observacoes)}</p>` : ''}
@@ -432,7 +468,9 @@
         ['Gastos', fmtMoeda(s.gastosTotal)],
         ['Líquido', fmtMoeda(s.liquido)],
         ['Dias trabalhados', String(s.diasTrabalhados)],
-        ['Dias não trabalhados', String(s.diasNaoTrabalhados)]
+        ['Dias não trabalhados', String(s.diasNaoTrabalhados)],
+        ['Orçamentos pendentes', String(s.pendentes)],
+        ['Recusados/cancelados', String(s.recusados)]
       ]
     });
 
@@ -488,7 +526,9 @@
       ['Gastos', s.gastosTotal],
       ['Líquido', s.liquido],
       ['Dias trabalhados', s.diasTrabalhados],
-      ['Dias não trabalhados', s.diasNaoTrabalhados]
+      ['Dias não trabalhados', s.diasNaoTrabalhados],
+      ['Orçamentos pendentes', s.pendentes],
+      ['Recusados/cancelados', s.recusados]
     ]);
 
     const ganhosSheet = XLSX.utils.json_to_sheet(
