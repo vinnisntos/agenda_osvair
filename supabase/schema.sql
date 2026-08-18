@@ -260,6 +260,81 @@ $$;
 
 grant execute on function public.responder_orcamento(uuid, uuid, boolean) to anon;
 
+-- ----------------------------------------------------------------------------
+-- Tabela: gastos
+-- Controle de despesas do veiculo/operacao (combustivel, manutencao, etc).
+-- ----------------------------------------------------------------------------
+create table if not exists public.gastos (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  data          date not null,
+  categoria     text not null,
+  subcategoria  text,
+  descricao     text,
+  valor         numeric(10,2) not null check (valor >= 0)
+);
+
+comment on table public.gastos is 'Despesas do veiculo/operacao: combustivel, manutencao (pneu, freio, oleo...), outros.';
+
+alter table public.gastos drop constraint if exists gastos_categoria_check;
+alter table public.gastos add constraint gastos_categoria_check
+  check (categoria in ('combustivel', 'manutencao', 'outros'));
+
+create index if not exists idx_gastos_data on public.gastos (data);
+
+alter table public.gastos enable row level security;
+
+drop policy if exists "admin pode gerenciar gastos" on public.gastos;
+create policy "admin pode gerenciar gastos"
+  on public.gastos
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- ----------------------------------------------------------------------------
+-- Tabela: ganhos
+-- Corridas/receitas: particulares (feitas fora do app) e da Uber (cheia,
+-- aproveitamento de corrida ou dia trabalhado com valor fechado).
+-- ----------------------------------------------------------------------------
+create table if not exists public.ganhos (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  data          date not null,
+  categoria     text not null,
+  tipo_corrida  text,
+  partida       text,
+  chegada       text,
+  valor         numeric(10,2) not null check (valor >= 0),
+  observacoes   text
+);
+
+comment on table public.ganhos is 'Receitas: corridas particulares e corridas/dias trabalhados na Uber.';
+
+alter table public.ganhos drop constraint if exists ganhos_categoria_check;
+alter table public.ganhos add constraint ganhos_categoria_check
+  check (categoria in ('particular', 'uber'));
+
+alter table public.ganhos drop constraint if exists ganhos_tipo_corrida_check;
+alter table public.ganhos add constraint ganhos_tipo_corrida_check
+  check (
+    (categoria = 'uber' and tipo_corrida in ('cheia', 'aproveitamento', 'dia_trabalhado'))
+    or (categoria = 'particular' and tipo_corrida is null)
+  );
+
+create index if not exists idx_ganhos_data on public.ganhos (data);
+create index if not exists idx_ganhos_categoria on public.ganhos (categoria);
+
+alter table public.ganhos enable row level security;
+
+drop policy if exists "admin pode gerenciar ganhos" on public.ganhos;
+create policy "admin pode gerenciar ganhos"
+  on public.ganhos
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
 -- ============================================================================
 -- Depois de rodar este script (primeira vez):
 -- 1. Em Authentication > Users, crie o usuario do Osvair (email + senha).

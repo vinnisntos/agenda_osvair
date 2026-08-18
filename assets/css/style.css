@@ -101,3 +101,33 @@ html, body {
   padding: .5rem .875rem;
   border-radius: .625rem;
 }
+
+/* -------------------- Financeiro -------------------- */
+.preset-btn { background:#f3f3f2; color:#6b6b6b; font-size:.75rem; font-weight:500; padding:.4rem .75rem; border-radius:9999px; white-space:nowrap; }
+.preset-btn.active { background:#0a0a0a; color:#fff; }
+
+.fin-card {
+  border: 1px solid #f0f0ef;
+  border-radius: .875rem;
+  padding: .875rem 1rem;
+}
+.fin-card .fin-card-label { font-size: .7rem; color:#9a9a98; text-transform:uppercase; letter-spacing:.05em; font-weight:500; }
+.fin-card .fin-card-value { font-size: 1.15rem; font-weight:700; color:#111; margin-top:.15rem; }
+
+.badge-categoria-particular { background:#e8eef4; color:#2b5a8a; }
+.badge-categoria-uber       { background:#111; color:#fff; }
+.badge-categoria-combustivel{ background:#f3f0e6; color:#8a6d00; }
+.badge-categoria-manutencao { background:#f4e6e6; color:#8a1f1f; }
+.badge-categoria-outros     { background:#e9e9e9; color:#3a3a3a; }
+
+.series-toggle { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; color:#4b4b4b; cursor:pointer; user-select:none; }
+.series-toggle .dot { width:.6rem; height:.6rem; border-radius:9999px; display:inline-block; }
+
+.fin-tab-btn { background:#f3f3f2; color:#6b6b6b; font-size:.8rem; font-weight:500; padding:.5rem 1rem; border-radius:9999px; }
+.fin-tab-btn.active { background:#0a0a0a; color:#fff; }
+
+.fin-list-row {
+  border: 1px solid #f0f0ef;
+  border-radius: .75rem;
+  padding: .75rem 1rem;
+}
