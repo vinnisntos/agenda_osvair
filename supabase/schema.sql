@@ -347,6 +347,36 @@ create policy "admin pode gerenciar ganhos"
   using (true)
   with check (true);
 
+-- ----------------------------------------------------------------------------
+-- Backfill: agendamentos que ja estavam 'concluido' antes do vinculo
+-- automatico com o financeiro existir. So registra quem tem orcamento_valor
+-- (sem valor nao ha o que lancar). E idempotente: nao duplica quem ja tem
+-- ganho vinculado (protegido pelo unique de ganhos_agendamento_id_key).
+-- ----------------------------------------------------------------------------
+insert into public.ganhos (agendamento_id, categoria, tipo_corrida, data, partida, chegada, valor, observacoes)
+select a.id, 'particular', null, a.data, a.origem, a.destino, a.orcamento_valor, a.nome_completo
+from public.agendamentos a
+where a.status = 'concluido'
+  and a.orcamento_valor is not null
+on conflict (agendamento_id) do nothing;
+
+-- Lista concluidos que NAO puderam ser migrados automaticamente por falta de
+-- valor — precisam ser lancados manualmente pelo painel Financeiro (+ Ganho).
+do $$
+declare
+  v_count integer;
+begin
+  select count(*) into v_count
+  from public.agendamentos a
+  where a.status = 'concluido'
+    and a.orcamento_valor is null
+    and not exists (select 1 from public.ganhos g where g.agendamento_id = a.id);
+
+  if v_count > 0 then
+    raise notice '% agendamento(s) concluido(s) sem valor definido — lance manualmente no painel Financeiro.', v_count;
+  end if;
+end $$;
+
 -- ============================================================================
 -- Depois de rodar este script (primeira vez):
 -- 1. Em Authentication > Users, crie o usuario do Osvair (email + senha).
