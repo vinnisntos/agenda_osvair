@@ -131,3 +131,40 @@ html, body {
   border-radius: .75rem;
   padding: .75rem 1rem;
 }
+
+/* -------------------- Recibos -------------------- */
+.recibo-form-section {
+  border: 1px solid #f0f0ef;
+  border-radius: .875rem;
+  padding: 1rem;
+}
+.recibo-section-title {
+  color: #9a9a98;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+  text-transform: uppercase;
+}
+.recibo-preview {
+  background: #fafaf9;
+  border: 1px solid #ededeb;
+  border-radius: .875rem;
+  padding: 1rem;
+}
+.recibo-preview-item {
+  border-top: 1px solid #ededeb;
+  padding-top: .45rem;
+}
+.recibo-preview-label {
+  color: #9a9a98;
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.recibo-preview-value {
+  color: #333;
+  font-size: .78rem;
+  margin-top: .1rem;
+  overflow-wrap: anywhere;
+}

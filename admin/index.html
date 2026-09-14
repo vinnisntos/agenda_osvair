@@ -47,6 +47,7 @@
       <button id="btn-novo-agendamento" class="text-xs bg-gray-900 text-white rounded-full px-3.5 py-2 font-medium">Novo agendamento</button>
       <button id="btn-bloquear" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Bloquear horário</button>
       <button id="btn-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
+      <button id="btn-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
       <button id="btn-logout" class="text-xs text-gray-400 px-2">Saír</button>
     </div>
   </header>
@@ -77,6 +78,7 @@
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
       <button id="btn-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
+      <button id="btn-fin-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
       <button id="btn-logout-financeiro" class="text-xs text-gray-400 px-2">Saír</button>
     </div>
   </header>
@@ -177,6 +179,132 @@
       <div id="fin-list" class="space-y-2"></div>
     </section>
 
+  </main>
+</div>
+
+<!-- ===================== RECIBOS ===================== -->
+<div id="view-recibos" class="hidden max-w-3xl mx-auto min-h-screen bg-white">
+  <header class="px-6 pt-8 pb-5 border-b border-gray-100 flex items-center justify-between">
+    <div>
+      <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Painel</p>
+      <h1 class="text-xl font-bold text-gray-900 mt-1">Recibos</h1>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap justify-end">
+      <button id="btn-rec-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
+      <button id="btn-rec-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
+      <button id="btn-logout-recibos" class="text-xs text-gray-400 px-2">Saír</button>
+    </div>
+  </header>
+
+  <main class="px-6 py-5">
+    <div class="mb-5">
+      <h2 class="text-base font-semibold text-gray-900">Novo recibo / New receipt</h2>
+      <p class="text-sm text-gray-500 mt-1">Preencha somente os dados necessários. Todos os campos são opcionais.</p>
+    </div>
+
+    <form id="recibo-form" class="space-y-4">
+      <section class="recibo-form-section">
+        <p class="recibo-section-title">Prestador / Service provider</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Prestador / Service provider</label>
+            <input name="prestador" type="text" autocomplete="name" maxlength="180" placeholder="Nome do prestador / Provider name"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">CPF / Brazilian Tax ID</label>
+            <input name="cpf" type="text" inputmode="numeric" maxlength="30" placeholder="000.000.000-00"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+        </div>
+      </section>
+
+      <section class="recibo-form-section">
+        <p class="recibo-section-title">Recebimento / Payment receipt</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Valor recebido / Amount received</label>
+            <div class="relative">
+              <span class="absolute left-4 top-3 text-sm text-gray-400">R$</span>
+              <input name="valor" type="number" step="0.01" min="0" placeholder="0,00"
+                class="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Forma de pagamento / Payment method</label>
+            <input name="forma_pagamento" type="text" list="formas-pagamento" maxlength="100" placeholder="Pix, dinheiro, cartão..."
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+            <datalist id="formas-pagamento">
+              <option value="Pix / Instant payment"></option>
+              <option value="Dinheiro / Cash"></option>
+              <option value="Cartão / Card"></option>
+              <option value="Transferência bancária / Bank transfer"></option>
+            </datalist>
+          </div>
+        </div>
+      </section>
+
+      <section class="recibo-form-section">
+        <p class="recibo-section-title">Passageiro / Passenger</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Passageiro / Passenger</label>
+            <input name="passageiro" type="text" maxlength="180" placeholder="Nome do passageiro / Passenger name"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Passaporte ou documento / ID</label>
+            <input name="documento" type="text" maxlength="80" placeholder="Número do documento / ID number"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+        </div>
+      </section>
+
+      <section class="recibo-form-section">
+        <p class="recibo-section-title">Serviço / Service</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Origem / Pick up location</label>
+            <input name="origem" type="text" maxlength="220" placeholder="Local de partida / Pick up location"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Destino / Destination</label>
+            <input name="destino" type="text" maxlength="220" placeholder="Local de chegada / Destination"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Data do serviço / Service date</label>
+            <input name="data_servico" type="date"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Local e data / Place and date</label>
+            <input name="local_data" type="text" maxlength="180" placeholder="São Paulo, 13 de setembro de 2026"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">
+          </div>
+        </div>
+      </section>
+
+      <section class="recibo-preview" aria-live="polite">
+        <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3 mb-3">
+          <div>
+            <p class="text-[10px] uppercase tracking-[.18em] text-gray-400">Prévia do documento</p>
+            <h3 class="font-bold text-gray-900 mt-1">RECIBO / RECEIPT</h3>
+          </div>
+          <p id="recibo-preview-valor" class="font-bold text-gray-900 text-right">Valor não informado</p>
+        </div>
+        <p class="text-xs leading-relaxed text-gray-600">Declaro, para os devidos fins, o recebimento do valor indicado neste documento pelos serviços de transporte aqui descritos.</p>
+        <p class="text-xs leading-relaxed text-gray-500 mt-1">I hereby acknowledge receipt of the amount stated in this document for the transportation services described herein.</p>
+        <div id="recibo-preview-dados" class="grid sm:grid-cols-2 gap-x-4 gap-y-2 mt-4"></div>
+      </section>
+
+      <p id="recibo-error" class="hidden text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2"></p>
+      <div class="flex flex-col sm:flex-row gap-2 pb-8">
+        <button type="submit" id="btn-gerar-recibo" class="flex-1 bg-gray-900 text-white font-medium py-3 rounded-xl">Gerar recibo em PDF</button>
+        <button type="button" id="btn-limpar-recibo" class="sm:w-32 border border-gray-200 text-gray-600 font-medium py-3 rounded-xl">Limpar</button>
+      </div>
+    </form>
   </main>
 </div>
 
@@ -445,6 +573,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="../assets/js/bootstrap.js" data-next="../assets/js/admin.js,../assets/js/financeiro.js"></script>
+<script src="../assets/js/bootstrap.js" data-next="../assets/js/admin.js,../assets/js/financeiro.js,../assets/js/recibos.js"></script>
 </body>
 </html>
