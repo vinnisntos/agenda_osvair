@@ -1,32 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Painel administrativo. A área pública usa assets/css/agenda.css.
+   Mesma marca (stone / ink / azul, Rokkitt + Literata); superfícies separadas por tom, não por linha. */
 
 :root {
-  --graphite-950: #0a0a0a;
-  --graphite-900: #161616;
-  --graphite-800: #232323;
-  --graphite-700: #333333;
-  --graphite-500: #6b6b6b;
-  --graphite-300: #b8b8b8;
-  --graphite-100: #ededed;
+  --bg: #dfdedb;
+  --paper: #ecebe8;
+  --surface: #e3e2de;
+  --surface-2: #d3d2ce;
+  --ink: #26251e;
+  --muted: #55534b;
+  --accent: #2456d6;
 }
 
 html, body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #f7f7f6;
+  font-family: 'Literata', Georgia, serif;
   -webkit-tap-highlight-color: transparent;
 }
+body.admin { background-color: var(--bg); color: var(--ink); }
+body.admin .bg-white { background-color: var(--paper); }
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Barra de rolagem discreta */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-thumb { background: var(--graphite-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #b9b7b0; }
 
-.app-shell {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: #fff;
-  box-shadow: 0 0 40px rgba(0,0,0,0.04);
+.wordmark, .panel-title {
+  font-family: 'Rokkitt', 'Arial Narrow', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.88;
+  color: var(--ink);
 }
+.wordmark { font-size: 4.5rem; }
+.panel-title { font-size: 2.5rem; }
+
+/* campos: fundo branco sobre o papel, foco no azul da marca */
+body.admin input:not([type="checkbox"]):not([type="radio"]),
+body.admin select,
+body.admin textarea { background-color: #f7f6f4; }
+body.admin input:focus, body.admin select:focus, body.admin textarea:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* botões: resposta ao toque */
+body.admin button { transition: background-color .18s ease, color .18s ease, transform .14s cubic-bezier(0.22, 1, 0.36, 1); }
+body.admin button:active:not(:disabled) { transform: scale(0.97); }
+body.admin .bg-gray-900:hover { background-color: var(--accent); }
 
 .step {
   animation: fadeIn .25s ease;
@@ -35,41 +53,7 @@ html, body {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.slot-btn {
-  transition: all .15s ease;
-}
-.slot-btn:disabled {
-  opacity: .35;
-  text-decoration: line-through;
-  cursor: not-allowed;
-}
-
-.cal-day {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  font-size: .875rem;
-  transition: all .15s ease;
-}
-.cal-day:not(:disabled):hover {
-  background: var(--graphite-100);
-}
-.cal-day.selected {
-  background: var(--graphite-950);
-  color: #fff;
-  font-weight: 600;
-}
-.cal-day:disabled {
-  color: #cfcfcf;
-  cursor: not-allowed;
-}
-.cal-day.today:not(.selected) {
-  box-shadow: inset 0 0 0 1.5px var(--graphite-950);
-  font-weight: 600;
-}
+@media (prefers-reduced-motion: reduce) { .step { animation: none; } }
 
 .spinner {
   width: 18px; height: 18px;
@@ -80,91 +64,91 @@ html, body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.badge-solicitado        { background:#e8eef4; color:#2b5a8a; }
-.badge-orcamento_enviado { background:#f3f0e6; color:#8a6d00; }
-.badge-confirmado        { background:#e6f0ea; color:#1f6b3f; }
-.badge-concluido         { background:#e9e9e9; color:#3a3a3a; }
+.badge-solicitado        { background:#d7e1f8; color:#1d3f9a; }
+.badge-orcamento_enviado { background:#efe6c8; color:#6b5300; }
+.badge-confirmado        { background:#d6e8dc; color:#1f5b36; }
+.badge-concluido         { background:var(--surface-2); color:var(--ink); }
 .badge-recusado,
-.badge-cancelado         { background:#f4e6e6; color:#8a1f1f; }
+.badge-cancelado         { background:#f1d9d6; color:#8a1f1f; }
 
-.tab-btn { background:#f3f3f2; color:#6b6b6b; }
-.tab-btn.active { background:#0a0a0a; color:#fff; }
+.tab-btn { background:var(--surface); color:var(--muted); }
+.tab-btn:hover { background:var(--surface-2); color:var(--ink); }
+.tab-btn.active { background:var(--ink); color:var(--paper); }
 
 .card-agendamento {
-  border: 1px solid #f0f0ef;
-  border-radius: .875rem;
+  background: var(--surface);
   padding: 1rem;
 }
 .action-btn {
-  font-size: .8rem;
-  font-weight: 500;
-  padding: .5rem .875rem;
-  border-radius: .625rem;
+  font-size: .8125rem;
+  font-weight: 600;
+  padding: .55rem .875rem;
 }
 
 /* -------------------- Financeiro -------------------- */
-.preset-btn { background:#f3f3f2; color:#6b6b6b; font-size:.75rem; font-weight:500; padding:.4rem .75rem; border-radius:9999px; white-space:nowrap; }
-.preset-btn.active { background:#0a0a0a; color:#fff; }
+.preset-btn { background:var(--surface); color:var(--muted); font-size:.8125rem; font-weight:600; padding:.45rem .8rem; white-space:nowrap; }
+.preset-btn:hover { background:var(--surface-2); color:var(--ink); }
+.preset-btn.active { background:var(--ink); color:var(--paper); }
 
 .fin-card {
-  border: 1px solid #f0f0ef;
-  border-radius: .875rem;
+  background: var(--surface);
   padding: .875rem 1rem;
 }
-.fin-card .fin-card-label { font-size: .7rem; color:#9a9a98; text-transform:uppercase; letter-spacing:.05em; font-weight:500; }
-.fin-card .fin-card-value { font-size: 1.15rem; font-weight:700; color:#111; margin-top:.15rem; }
+.fin-card .fin-card-label { font-size: .8125rem; color:var(--muted); font-weight:400; }
+.fin-card .fin-card-value { font-family:'Rokkitt','Arial Narrow',sans-serif; font-size: 1.6rem; font-weight:800; line-height:1.05; color:var(--ink); margin-top:.2rem; font-variant-numeric: tabular-nums; }
 
-.badge-categoria-particular { background:#e8eef4; color:#2b5a8a; }
-.badge-categoria-uber       { background:#111; color:#fff; }
-.badge-categoria-combustivel{ background:#f3f0e6; color:#8a6d00; }
-.badge-categoria-manutencao { background:#f4e6e6; color:#8a1f1f; }
-.badge-categoria-outros     { background:#e9e9e9; color:#3a3a3a; }
+.badge-categoria-particular { background:#d7e1f8; color:#1d3f9a; }
+.badge-categoria-uber       { background:var(--ink); color:var(--paper); }
+.badge-categoria-combustivel{ background:#efe6c8; color:#6b5300; }
+.badge-categoria-manutencao { background:#f1d9d6; color:#8a1f1f; }
+.badge-categoria-outros     { background:var(--surface-2); color:var(--ink); }
 
-.series-toggle { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; color:#4b4b4b; cursor:pointer; user-select:none; }
+.series-toggle { display:inline-flex; align-items:center; gap:.4rem; font-size:.8125rem; color:var(--muted); cursor:pointer; user-select:none; }
 .series-toggle .dot { width:.6rem; height:.6rem; border-radius:9999px; display:inline-block; }
 
-.fin-tab-btn { background:#f3f3f2; color:#6b6b6b; font-size:.8rem; font-weight:500; padding:.5rem 1rem; border-radius:9999px; }
-.fin-tab-btn.active { background:#0a0a0a; color:#fff; }
+.fin-tab-btn { background:var(--surface); color:var(--muted); font-size:.875rem; font-weight:600; padding:.5rem 1rem; }
+.fin-tab-btn:hover { background:var(--surface-2); color:var(--ink); }
+.fin-tab-btn.active { background:var(--ink); color:var(--paper); }
 
 .fin-list-row {
-  border: 1px solid #f0f0ef;
-  border-radius: .75rem;
+  background: var(--surface);
   padding: .75rem 1rem;
 }
+.chart-box { background: #f7f6f4; }
 
 /* -------------------- Recibos -------------------- */
 .recibo-form-section {
-  border: 1px solid #f0f0ef;
-  border-radius: .875rem;
+  background: var(--surface);
   padding: 1rem;
 }
 .recibo-section-title {
-  color: #9a9a98;
-  font-size: .7rem;
+  color: var(--ink);
+  font-size: .9375rem;
   font-weight: 600;
-  letter-spacing: .08em;
   margin-bottom: .75rem;
-  text-transform: uppercase;
 }
 .recibo-preview {
-  background: #fafaf9;
-  border: 1px solid #ededeb;
-  border-radius: .875rem;
+  background: #f7f6f4;
   padding: 1rem;
 }
 .recibo-preview-item {
-  border-top: 1px solid #ededeb;
   padding-top: .45rem;
 }
 .recibo-preview-label {
-  color: #9a9a98;
-  font-size: .65rem;
-  text-transform: uppercase;
-  letter-spacing: .04em;
+  color: var(--muted);
+  font-size: .8125rem;
 }
 .recibo-preview-value {
-  color: #333;
-  font-size: .78rem;
+  color: var(--ink);
+  font-size: .875rem;
   margin-top: .1rem;
   overflow-wrap: anywhere;
 }
+
+/* telefone: título em cima, ações embaixo, nada saindo da tela */
+@media (max-width: 640px) {
+  body.admin header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  body.admin header > div:last-child { justify-content: flex-start; }
+  .panel-title { font-size: 2.25rem; }
+}
+body.admin input[type="date"] { min-width: 0; }

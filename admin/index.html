@@ -6,17 +6,38 @@
 <title>Painel · Osvair Dos Santos</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@800&family=Literata:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // Tema da marca (o mesmo do portfólio e da agenda pública) aplicado às classes que o JS gera
+  tailwind.config = {
+    theme: {
+      borderRadius: { none: '0', sm: '0', DEFAULT: '0', md: '0', lg: '0', xl: '0', '2xl': '0', '3xl': '0', full: '0' },
+      extend: {
+        colors: {
+          gray: { 50: '#ebeae7', 100: '#e3e2de', 200: '#d3d2ce', 300: '#b9b7b0', 400: '#6e6c64', 500: '#55534b', 600: '#47453e', 700: '#3a3830', 800: '#2f2e27', 900: '#26251e' },
+        },
+        fontFamily: {
+          sans: ['Literata', 'Georgia', 'serif'],
+          display: ['Rokkitt', '"Arial Narrow"', 'sans-serif'],
+        },
+        fontSize: { xs: ['0.8125rem', { lineHeight: '1.25rem' }] },
+      },
+    },
+  };
+</script>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body class="bg-[#f7f7f6] min-h-screen">
+<body class="admin min-h-screen">
 
 <!-- ===================== LOGIN ===================== -->
 <div id="view-login" class="min-h-screen flex items-center justify-center px-6">
   <div class="w-full max-w-sm">
     <div class="text-center mb-8">
-      <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Painel administrativo</p>
-      <h1 class="text-xl font-bold text-gray-900 mt-1">Osvair Dos Santos</h1>
+      <h1 class="wordmark">Osvair</h1>
+      <p class="text-sm text-gray-500 mt-2">Painel administrativo</p>
     </div>
     <form id="login-form" class="space-y-3 bg-white p-6 rounded-2xl shadow-sm">
       <div>
@@ -38,17 +59,16 @@
 <!-- ===================== DASHBOARD ===================== -->
 <div id="view-dashboard" class="hidden max-w-3xl mx-auto min-h-screen bg-white">
 
-  <header class="px-6 pt-8 pb-5 border-b border-gray-100 flex items-center justify-between">
+  <header class="px-6 pt-8 pb-5 flex items-center justify-between">
     <div>
-      <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Painel</p>
-      <h1 class="text-xl font-bold text-gray-900 mt-1">Agendamentos</h1>
+      <h1 class="panel-title">Agendamentos</h1>
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
       <button id="btn-novo-agendamento" class="text-xs bg-gray-900 text-white rounded-full px-3.5 py-2 font-medium">Novo agendamento</button>
       <button id="btn-bloquear" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Bloquear horário</button>
       <button id="btn-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
       <button id="btn-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
-      <button id="btn-logout" class="text-xs text-gray-400 px-2">Saír</button>
+      <button id="btn-logout" class="text-xs text-gray-400 px-2">Sair</button>
     </div>
   </header>
 
@@ -71,15 +91,14 @@
 <!-- ===================== FINANCEIRO ===================== -->
 <div id="view-financeiro" class="hidden max-w-3xl mx-auto min-h-screen bg-white">
 
-  <header class="px-6 pt-8 pb-5 border-b border-gray-100 flex items-center justify-between">
+  <header class="px-6 pt-8 pb-5 flex items-center justify-between">
     <div>
-      <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Painel</p>
-      <h1 class="text-xl font-bold text-gray-900 mt-1">Financeiro</h1>
+      <h1 class="panel-title">Financeiro</h1>
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
       <button id="btn-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
       <button id="btn-fin-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
-      <button id="btn-logout-financeiro" class="text-xs text-gray-400 px-2">Saír</button>
+      <button id="btn-logout-financeiro" class="text-xs text-gray-400 px-2">Sair</button>
     </div>
   </header>
 
@@ -164,7 +183,7 @@
         <label class="series-toggle"><input type="checkbox" data-series="pendentes"><span class="dot" style="background:#d97706"></span>Orçamentos pendentes</label>
         <label class="series-toggle"><input type="checkbox" data-series="recusados"><span class="dot" style="background:#8a1f1f"></span>Recusados/cancelados</label>
       </div>
-      <div class="border border-gray-100 rounded-xl p-3">
+      <div class="chart-box p-3">
         <canvas id="fin-chart" height="220"></canvas>
       </div>
     </section>
@@ -184,15 +203,14 @@
 
 <!-- ===================== RECIBOS ===================== -->
 <div id="view-recibos" class="hidden max-w-3xl mx-auto min-h-screen bg-white">
-  <header class="px-6 pt-8 pb-5 border-b border-gray-100 flex items-center justify-between">
+  <header class="px-6 pt-8 pb-5 flex items-center justify-between">
     <div>
-      <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Painel</p>
-      <h1 class="text-xl font-bold text-gray-900 mt-1">Recibos</h1>
+      <h1 class="panel-title">Recibos</h1>
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
       <button id="btn-rec-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
       <button id="btn-rec-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
-      <button id="btn-logout-recibos" class="text-xs text-gray-400 px-2">Saír</button>
+      <button id="btn-logout-recibos" class="text-xs text-gray-400 px-2">Sair</button>
     </div>
   </header>
 
@@ -287,9 +305,9 @@
       </section>
 
       <section class="recibo-preview" aria-live="polite">
-        <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3 mb-3">
+        <div class="flex items-start justify-between gap-3 pb-3 mb-3">
           <div>
-            <p class="text-[10px] uppercase tracking-[.18em] text-gray-400">Prévia do documento</p>
+            <p class="text-sm text-gray-500">Prévia do documento</p>
             <h3 class="font-bold text-gray-900 mt-1">RECIBO / RECEIPT</h3>
           </div>
           <p id="recibo-preview-valor" class="font-bold text-gray-900 text-right">Valor não informado</p>
@@ -439,7 +457,7 @@
     </form>
 
     <div class="mt-6">
-      <p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Bloqueios futuros</p>
+      <p class="text-sm font-semibold text-gray-700 mb-2">Bloqueios futuros</p>
       <div id="bloqueios-list" class="space-y-2"></div>
     </div>
   </div>
@@ -543,7 +561,7 @@
         <label class="block text-sm font-medium text-gray-700 mb-1.5">Observações da viagem <span class="text-gray-400 font-normal">(opcional)</span></label>
         <textarea name="observacoes" rows="2" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 resize-none"></textarea>
       </div>
-      <div class="border-t border-gray-100 pt-3">
+      <div class="pt-3">
         <label class="block text-sm font-medium text-gray-700 mb-1.5">Valor do orçamento (R$) <span class="text-gray-400 font-normal">(obrigatório só se for enviar orçamento)</span></label>
         <input type="number" step="0.01" min="0" name="valor" placeholder="0,00"
           class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10">

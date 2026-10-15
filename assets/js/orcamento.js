@@ -26,6 +26,7 @@
     const map = { solicitado: 'state-solicitado', orcamento_enviado: 'state-orcamento', confirmado: 'state-confirmado', recusado: 'state-recusado', cancelado: 'state-recusado', concluido: 'state-concluido' };
     const target = map[status];
     if (target) el(target).classList.remove('hidden');
+    el('orcamento-acoes').classList.toggle('hidden', status !== 'orcamento_enviado');
   }
 
   function render(row) {

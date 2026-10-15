@@ -21,19 +21,19 @@ function createCalendar(container, { minDate, onSelectDate }) {
     const canGoPrev = new Date(viewYear, viewMonth, 1) > new Date(minDate.getFullYear(), minDate.getMonth(), 1);
 
     let html = `
-      <div class="flex items-center justify-between mb-4 px-1">
-        <button data-nav="prev" class="w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 ${canGoPrev ? '' : 'opacity-30 pointer-events-none'}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      <div class="cal-head">
+        <button type="button" data-nav="prev" class="cal-nav" aria-label="Mês anterior" ${canGoPrev ? '' : 'disabled'}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <span class="font-semibold text-sm tracking-wide">${MESES[viewMonth]} ${viewYear}</span>
-        <button data-nav="next" class="w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="cal-title" aria-live="polite">${MESES[viewMonth]} ${viewYear}</span>
+        <button type="button" data-nav="next" class="cal-nav" aria-label="Próximo mês">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </div>
-      <div class="grid grid-cols-7 gap-1 mb-1 text-center text-xs text-gray-400 font-medium">
+      <div class="cal-week" aria-hidden="true">
         ${DIAS.map(d => `<div>${d}</div>`).join('')}
       </div>
-      <div class="grid grid-cols-7 gap-1">
+      <div class="cal-grid" role="group" aria-label="Dias de ${MESES[viewMonth]}">
     `;
 
     for (let i = 0; i < startWeekday; i++) html += `<div></div>`;
@@ -44,9 +44,11 @@ function createCalendar(container, { minDate, onSelectDate }) {
       const isPast = dateOnly < today || dateOnly < toDateOnly(minDate);
       const isSelected = selected && dateOnly.getTime() === selected.getTime();
       const isToday = dateOnly.getTime() === today.getTime();
-      html += `<button
+      html += `<button type="button"
         class="cal-day ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}"
         data-day="${day}"
+        aria-label="${day} de ${MESES[viewMonth]}${isToday ? ', hoje' : ''}"
+        ${isSelected ? 'aria-pressed="true"' : ''}
         ${isPast ? 'disabled' : ''}
       >${day}</button>`;
     }

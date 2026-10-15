@@ -3,92 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Orçamento · Osvair Dos Santos</title>
+<title>Seu orçamento com Osvair dos Santos</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:,">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/agenda.css">
 </head>
 <body>
-<div class="app-shell">
+<div class="shell" id="shell" data-step="step-welcome">
 
-  <header class="px-6 pt-8 pb-6 border-b border-gray-100">
-    <p class="text-[11px] tracking-[0.2em] uppercase text-gray-400 font-medium">Orçamento</p>
-    <h1 class="text-2xl font-bold text-gray-900 mt-1">Osvair Dos Santos</h1>
-    <p class="text-sm text-gray-500 mt-0.5">Transporte Executivo · Corolla Altis HV Hybrid 2023</p>
-  </header>
+  <figure class="stage">
+    <img src="assets/img/osvair.jpg" width="896" height="840" alt="Osvair dos Santos, de terno cinza e gravata azul">
+  </figure>
 
-  <main class="px-6 py-6">
-
-    <div id="loading" class="text-sm text-gray-400 py-10 text-center">Carregando…</div>
-
-    <div id="not-found" class="hidden text-center py-10">
-      <p class="font-semibold text-gray-900 mb-1">Link inválido</p>
-      <p class="text-sm text-gray-500">Não encontramos esse orçamento. Verifique o link recebido pelo WhatsApp.</p>
-    </div>
-
-    <div id="content" class="hidden step">
-      <div class="bg-gray-50 rounded-xl p-4 text-sm space-y-2 mb-6">
-        <div class="flex justify-between"><span class="text-gray-400">Data / Horário</span><span id="v-datetime" class="font-medium text-gray-900"></span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Passageiro</span><span id="v-nome" class="font-medium text-gray-900"></span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Origem</span><span id="v-origem" class="font-medium text-gray-900 text-right ml-4"></span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Destino</span><span id="v-destino" class="font-medium text-gray-900 text-right ml-4"></span></div>
+  <div class="col">
+    <div class="col-inner">
+      <div class="top">
+        <a href="https://osvairsantos.com.br">osvairsantos.com.br</a>
+        <a href="https://wa.me/5515988164662" target="_blank" rel="noopener">WhatsApp (15) 98816-4662</a>
       </div>
 
-      <!-- status: solicitado (sem orcamento ainda) -->
-      <div id="state-solicitado" class="hidden text-center py-4">
-        <p class="font-semibold text-gray-900 mb-1">Aguardando orçamento</p>
-        <p class="text-sm text-gray-500">O Osvair ainda está preparando o valor da sua corrida. Você vai receber este mesmo link atualizado pelo WhatsApp assim que estiver pronto.</p>
-      </div>
+      <header class="brand">
+        <p class="wordmark" aria-hidden="true">Osvair</p>
+        <h1 class="lead" style="margin-top:0.85rem">Seu orçamento de transporte</h1>
+      </header>
 
-      <!-- status: orcamento_enviado -->
-      <div id="state-orcamento" class="hidden">
-        <div class="text-center mb-6">
-          <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Valor do orçamento</p>
-          <p id="v-valor" class="text-3xl font-bold text-gray-900"></p>
-          <p id="v-obs" class="text-sm text-gray-500 mt-2"></p>
-        </div>
+      <main>
+        <p id="loading" class="note">Carregando…</p>
 
-        <div id="resposta-erro" class="hidden text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-4"></div>
+        <section id="not-found" class="hidden" aria-labelledby="t-nf">
+          <h2 class="head" id="t-nf" style="margin-bottom:0.9rem">Link inválido</h2>
+          <p>Não encontramos esse orçamento. Confira o link recebido pelo WhatsApp ou fale com o Osvair.</p>
+        </section>
 
-        <button id="btn-aprovar" class="w-full bg-gray-900 text-white font-medium py-3.5 rounded-xl mb-3 flex items-center justify-center gap-2">
-          <span id="btn-aprovar-text">Aprovar e reservar minha data</span>
-        </button>
+        <div id="content" class="hidden step">
+          <!-- orçamento enviado: o valor é a primeira coisa -->
+          <section id="state-orcamento" class="hidden" aria-labelledby="t-valor">
+            <p class="price-label" id="t-valor">Valor da corrida</p>
+            <p id="v-valor" class="price"></p>
+            <p id="v-obs" class="price-obs muted"></p>
+          </section>
 
-        <div id="recusar-wrap">
-          <button id="btn-recusar" class="w-full text-sm text-gray-500 py-2">Não vou aceitar este orçamento</button>
-        </div>
-        <div id="recusar-confirm" class="hidden text-center">
-          <p class="text-sm text-gray-600 mb-3">Tem certeza que deseja recusar?</p>
-          <div class="flex gap-2">
-            <button id="btn-recusar-confirmar" class="flex-1 bg-red-50 text-red-600 font-medium py-2.5 rounded-xl text-sm">Sim, recusar</button>
-            <button id="btn-recusar-cancelar" class="flex-1 bg-gray-100 text-gray-700 font-medium py-2.5 rounded-xl text-sm">Voltar</button>
+          <section id="state-solicitado" class="hidden">
+            <h2 class="head" style="margin-bottom:0.9rem">Aguardando orçamento</h2>
+            <p>O Osvair ainda está preparando o valor da sua corrida. Este mesmo link chega atualizado pelo WhatsApp quando estiver pronto.</p>
+          </section>
+
+          <section id="state-confirmado" class="hidden">
+            <div class="done-mark" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h2 class="head" style="margin-bottom:0.9rem">Data reservada</h2>
+            <p>Orçamento aprovado. O Osvair entra em contato para combinar os últimos detalhes.</p>
+          </section>
+
+          <section id="state-recusado" class="hidden">
+            <h2 class="head" style="margin-bottom:0.9rem">Orçamento recusado</h2>
+            <p>Se mudar de ideia, fale com o Osvair pelo WhatsApp.</p>
+          </section>
+
+          <section id="state-concluido" class="hidden">
+            <h2 class="head" style="margin-bottom:0.9rem">Corrida concluída</h2>
+            <p>Obrigado por viajar com o Osvair.</p>
+          </section>
+
+          <dl class="facts" style="margin-top:2rem">
+            <div><dt>Data e horário</dt><dd id="v-datetime"></dd></div>
+            <div><dt>Passageiro</dt><dd id="v-nome"></dd></div>
+            <div><dt>Origem</dt><dd id="v-origem"></dd></div>
+            <div><dt>Destino</dt><dd id="v-destino"></dd></div>
+          </dl>
+
+          <!-- ações do orçamento: ficam abaixo do resumo -->
+          <div id="orcamento-acoes">
+            <p id="resposta-erro" class="error hidden" role="alert" style="margin-bottom:1rem"></p>
+
+            <button id="btn-aprovar" class="btn">
+              <span id="btn-aprovar-text">Aprovar e reservar minha data</span>
+            </button>
+
+            <div id="recusar-wrap">
+              <button id="btn-recusar" class="link-btn" type="button" style="margin-top:0.75rem">Não vou aceitar este orçamento</button>
+            </div>
+            <div id="recusar-confirm" class="hidden" style="margin-top:1.25rem">
+              <p style="margin-bottom:0.75rem">Tem certeza que quer recusar?</p>
+              <div class="btn-row">
+                <button id="btn-recusar-confirmar" class="btn btn-danger" type="button">Sim, recusar</button>
+                <button id="btn-recusar-cancelar" class="btn btn-soft" type="button">Voltar</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- status: confirmado -->
-      <div id="state-confirmado" class="hidden text-center py-4">
-        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 flex items-center justify-center mb-4">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <p class="font-semibold text-gray-900 mb-1">Orçamento aprovado!</p>
-        <p class="text-sm text-gray-500">Sua data está reservada. O Osvair entrará em contato para os últimos detalhes.</p>
-      </div>
-
-      <!-- status: recusado / cancelado -->
-      <div id="state-recusado" class="hidden text-center py-4">
-        <p class="font-semibold text-gray-900 mb-1">Orçamento recusado</p>
-        <p class="text-sm text-gray-500">Se mudar de ideia, fale com o Osvair pelo WhatsApp.</p>
-      </div>
-
-      <!-- status: concluido -->
-      <div id="state-concluido" class="hidden text-center py-4">
-        <p class="font-semibold text-gray-900 mb-1">Corrida concluída</p>
-        <p class="text-sm text-gray-500">Obrigado por viajar com o Osvair!</p>
-      </div>
+      </main>
     </div>
-  </main>
+
+    <footer class="foot">
+      <span>Pix, cartão de crédito e débito.</span>
+      <a href="./">Fazer outro pedido</a>
+    </footer>
+  </div>
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

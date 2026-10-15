@@ -95,9 +95,9 @@
       btn.type = 'button';
       btn.textContent = hhmm;
       btn.disabled = disabled;
-      btn.className = `slot-btn border rounded-xl py-2.5 text-sm font-medium ${
-        state.time === hhmm ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-200 text-gray-700'
-      }`;
+      btn.className = `slot${state.time === hhmm ? ' is-selected' : ''}`;
+      btn.setAttribute('aria-pressed', state.time === hhmm ? 'true' : 'false');
+      if (ocupado) btn.setAttribute('aria-label', `${hhmm}, ocupado`);
       btn.addEventListener('click', () => {
         state.time = hhmm;
         el('btn-to-form').disabled = false;
@@ -118,8 +118,11 @@
     const progMap = { 'step-datetime': 1, 'step-form': 2, 'step-success': 3 };
     el('progress-bar').classList.toggle('hidden', !progMap[step]);
     for (let i = 1; i <= 3; i++) {
-      el(`prog-${i}`).className = `h-1 flex-1 rounded-full ${i <= (progMap[step] || 0) ? 'bg-gray-900' : 'bg-gray-200'}`;
+      const cur = progMap[step] || 0;
+      el(`prog-${i}`).className = `${i <= cur ? 'is-done' : ''} ${i === cur ? 'is-current' : ''}`.trim();
+      if (i === cur) el(`prog-${i}`).setAttribute('aria-current', 'step'); else el(`prog-${i}`).removeAttribute('aria-current');
     }
+    el('shell').dataset.step = step;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -144,6 +147,14 @@
   el('booking-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
+    const invalid = [...form.querySelectorAll('[required]')].filter((f) => !f.value.trim());
+    form.querySelectorAll('[required]').forEach((f) => f.setAttribute('aria-invalid', invalid.includes(f) ? 'true' : 'false'));
+    if (invalid.length) {
+      el('form-error').textContent = 'Preencha nome, WhatsApp, origem e destino para continuar.';
+      el('form-error').classList.remove('hidden');
+      invalid[0].focus();
+      return;
+    }
     const fd = new FormData(form);
     const payload = {
       data: toISODate(state.date),
@@ -168,7 +179,7 @@
     const { error } = await window.sb.from('agendamentos').insert(payload);
 
     submitBtn.disabled = false;
-    el('btn-submit-text').textContent = 'Solicitar agendamento';
+    el('btn-submit-text').textContent = 'Pedir orçamento';
 
     if (error) {
       console.error(error);
