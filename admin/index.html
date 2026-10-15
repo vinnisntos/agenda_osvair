@@ -8,22 +8,23 @@
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@800&family=Literata:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#050506">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-  // Tema da marca (o mesmo do portfólio e da agenda pública) aplicado às classes que o JS gera
+  // Tema escuro de vidro (o mesmo da agenda pública) aplicado às classes que o JS gera:
+  // a escala de cinza é invertida (gray-900 = texto claro) e os tons de alerta viram versões escuras.
   tailwind.config = {
     theme: {
-      borderRadius: { none: '0', sm: '0', DEFAULT: '0', md: '0', lg: '0', xl: '0', '2xl': '0', '3xl': '0', full: '0' },
       extend: {
         colors: {
-          gray: { 50: '#ebeae7', 100: '#e3e2de', 200: '#d3d2ce', 300: '#b9b7b0', 400: '#6e6c64', 500: '#55534b', 600: '#47453e', 700: '#3a3830', 800: '#2f2e27', 900: '#26251e' },
+          gray: { 50: '#141417', 100: '#1f1f23', 200: '#2c2c32', 300: '#3f3f46', 400: '#8b8b94', 500: '#a1a1aa', 600: '#b8b8c0', 700: '#d4d4d8', 800: '#e4e4e7', 900: '#f5f5f4' },
+          red: { 50: '#2a1515', 600: '#ff8a80', 700: '#ff9d94' },
+          emerald: { 50: '#11261b', 700: '#7ee2a8' },
+          amber: { 600: '#f5c26b' },
         },
-        fontFamily: {
-          sans: ['Literata', 'Georgia', 'serif'],
-          display: ['Rokkitt', '"Arial Narrow"', 'sans-serif'],
-        },
-        fontSize: { xs: ['0.8125rem', { lineHeight: '1.25rem' }] },
+        fontFamily: { sans: ['Geist', 'system-ui', 'sans-serif'] },
+        borderRadius: { xl: '0.875rem', '2xl': '1.5rem' },
       },
     },
   };
@@ -31,6 +32,8 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="admin min-h-screen">
+<div class="ambient" aria-hidden="true"><img src="../assets/img/rodovia.jpg" alt=""></div>
+<div class="grain" aria-hidden="true"></div>
 
 <!-- ===================== LOGIN ===================== -->
 <div id="view-login" class="min-h-screen flex items-center justify-center px-6">
@@ -175,13 +178,13 @@
     <!-- Grafico -->
     <section id="fin-chart-section" class="hidden">
       <div class="flex items-center gap-3 flex-wrap mb-3">
-        <label class="series-toggle"><input type="checkbox" data-series="particular" checked><span class="dot" style="background:#2b5a8a"></span>Ganhos particular</label>
-        <label class="series-toggle"><input type="checkbox" data-series="uber" checked><span class="dot" style="background:#111111"></span>Ganhos Uber</label>
-        <label class="series-toggle"><input type="checkbox" data-series="gastos" checked><span class="dot" style="background:#c0392b"></span>Gastos</label>
-        <label class="series-toggle"><input type="checkbox" data-series="liquido" checked><span class="dot" style="background:#1f6b3f"></span>Líquido</label>
-        <label class="series-toggle"><input type="checkbox" data-series="naoTrabalhado"><span class="dot" style="background:#d0d0d0"></span>Dias não trabalhados</label>
-        <label class="series-toggle"><input type="checkbox" data-series="pendentes"><span class="dot" style="background:#d97706"></span>Orçamentos pendentes</label>
-        <label class="series-toggle"><input type="checkbox" data-series="recusados"><span class="dot" style="background:#8a1f1f"></span>Recusados/cancelados</label>
+        <label class="series-toggle"><input type="checkbox" data-series="particular" checked><span class="dot" style="background:#5b8cff"></span>Ganhos particular</label>
+        <label class="series-toggle"><input type="checkbox" data-series="uber" checked><span class="dot" style="background:#e4e4e7"></span>Ganhos Uber</label>
+        <label class="series-toggle"><input type="checkbox" data-series="gastos" checked><span class="dot" style="background:#ff8a80"></span>Gastos</label>
+        <label class="series-toggle"><input type="checkbox" data-series="liquido" checked><span class="dot" style="background:#7ee2a8"></span>Líquido</label>
+        <label class="series-toggle"><input type="checkbox" data-series="naoTrabalhado"><span class="dot" style="background:#52525b"></span>Dias não trabalhados</label>
+        <label class="series-toggle"><input type="checkbox" data-series="pendentes"><span class="dot" style="background:#f5c26b"></span>Orçamentos pendentes</label>
+        <label class="series-toggle"><input type="checkbox" data-series="recusados"><span class="dot" style="background:#c2410c"></span>Recusados/cancelados</label>
       </div>
       <div class="chart-box p-3">
         <canvas id="fin-chart" height="220"></canvas>

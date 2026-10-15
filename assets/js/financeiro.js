@@ -216,13 +216,13 @@
     const recusadosData = days.map((d) => byDay[d].recusados);
 
     const datasets = [
-      { _key: 'particular', type: 'line', label: 'Ganhos particular', data: particularData, borderColor: '#2b5a8a', backgroundColor: '#2b5a8a', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.particular, order: 1 },
-      { _key: 'uber', type: 'line', label: 'Ganhos Uber', data: uberData, borderColor: '#111111', backgroundColor: '#111111', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.uber, order: 1 },
-      { _key: 'gastos', type: 'line', label: 'Gastos', data: gastosData, borderColor: '#c0392b', backgroundColor: '#c0392b', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.gastos, order: 1 },
-      { _key: 'liquido', type: 'line', label: 'Líquido', data: liquidoData, borderColor: '#1f6b3f', backgroundColor: '#1f6b3f', borderWidth: 2.5, tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.liquido, order: 1 },
-      { _key: 'naoTrabalhado', type: 'bar', label: 'Dias não trabalhados', data: naoTrabalhadoData, backgroundColor: 'rgba(160,160,160,0.35)', yAxisID: 'y1', barPercentage: 1, categoryPercentage: 1, hidden: !state.seriesVisible.naoTrabalhado, order: 10 },
-      { _key: 'pendentes', type: 'bar', label: 'Orçamentos pendentes', data: pendentesData, backgroundColor: 'rgba(217,119,6,0.6)', yAxisID: 'yCount', hidden: !state.seriesVisible.pendentes, order: 5 },
-      { _key: 'recusados', type: 'bar', label: 'Orçamentos recusados/cancelados', data: recusadosData, backgroundColor: 'rgba(138,31,31,0.6)', yAxisID: 'yCount', hidden: !state.seriesVisible.recusados, order: 5 }
+      { _key: 'particular', type: 'line', label: 'Ganhos particular', data: particularData, borderColor: '#5b8cff', backgroundColor: '#5b8cff', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.particular, order: 1 },
+      { _key: 'uber', type: 'line', label: 'Ganhos Uber', data: uberData, borderColor: '#e4e4e7', backgroundColor: '#e4e4e7', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.uber, order: 1 },
+      { _key: 'gastos', type: 'line', label: 'Gastos', data: gastosData, borderColor: '#ff8a80', backgroundColor: '#ff8a80', tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.gastos, order: 1 },
+      { _key: 'liquido', type: 'line', label: 'Líquido', data: liquidoData, borderColor: '#7ee2a8', backgroundColor: '#7ee2a8', borderWidth: 2.5, tension: 0.25, pointRadius: 2, hidden: !state.seriesVisible.liquido, order: 1 },
+      { _key: 'naoTrabalhado', type: 'bar', label: 'Dias não trabalhados', data: naoTrabalhadoData, backgroundColor: 'rgba(161,161,170,0.18)', yAxisID: 'y1', barPercentage: 1, categoryPercentage: 1, hidden: !state.seriesVisible.naoTrabalhado, order: 10 },
+      { _key: 'pendentes', type: 'bar', label: 'Orçamentos pendentes', data: pendentesData, backgroundColor: 'rgba(245,194,107,0.55)', yAxisID: 'yCount', hidden: !state.seriesVisible.pendentes, order: 5 },
+      { _key: 'recusados', type: 'bar', label: 'Orçamentos recusados/cancelados', data: recusadosData, backgroundColor: 'rgba(194,65,12,0.6)', yAxisID: 'yCount', hidden: !state.seriesVisible.recusados, order: 5 }
     ];
 
     if (state.chart) {
@@ -232,6 +232,9 @@
       return;
     }
 
+    // eixos e legendas legíveis no tema escuro do painel
+    Chart.defaults.color = '#a1a1aa';
+    Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
     state.chart = new Chart(el('fin-chart').getContext('2d'), {
       type: 'line',
       data: { labels, datasets },
