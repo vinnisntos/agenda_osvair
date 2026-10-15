@@ -23,17 +23,17 @@ Aplicação **web estática**, sem etapa de build, com persistência e autentica
 - WhatsApp (link universal `wa.me`), sem custo de API
 
 **Infraestrutura**
-- AWS EC2
+- Oracle Cloud (VPS Ubuntu ARM)
 - nginx como servidor web / proxy reverso
 - SSL via Certbot (Let's Encrypt)
 - pm2 (opcional, para deploy via processo Node)
-- Deploy via Git (`git pull` no servidor)
+- Deploy automático via GitHub Actions a cada push na `main` (`git pull` no servidor; `config/appsettings.json` fica só no servidor)
 
 ## Arquitetura
 
 ```
 ┌──────────────┐        ┌───────────────────┐        ┌──────────────┐
-│  Navegador   │◄──────►│   nginx (AWS EC2)   │◄──────►│   Supabase   │
+│  Navegador   │◄──────►│  nginx (Oracle VPS) │◄──────►│   Supabase   │
 │ HTML/JS/CSS  │  HTTPS │  arquivos estáticos │  HTTPS │  Postgres +  │
 └──────────────┘        └───────────────────┘        │  Auth + RLS  │
                                                         └──────────────┘

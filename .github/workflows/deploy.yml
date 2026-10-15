@@ -1,0 +1,34 @@
+name: Deploy
+
+# A cada push na main, atualiza o clone na VPS (Oracle Cloud).
+# A chave SSH de DEPLOY_SSH_KEY so consegue rodar /usr/local/bin/deploy-agenda-osvair
+# (command= + restrict no authorized_keys). config/appsettings.json fica so no servidor.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy na VPS
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes ubuntu@146.235.38.173
+
+      - name: Verificar site
+        run: |
+          curl -fsS -o /dev/null https://agenda.osvairsantos.com.br/
+          curl -fsS -o /dev/null https://agenda.osvairsantos.com.br/config/appsettings.json
