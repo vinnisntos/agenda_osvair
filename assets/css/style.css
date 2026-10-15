@@ -151,10 +151,12 @@ body.admin .bg-black\/40 { background-color: rgba(0, 0, 0, 0.55); backdrop-filte
 .next-ride .next-when { margin-top: 0.15rem; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; }
 .next-ride .next-who { margin-top: 0.15rem; font-size: 0.875rem; color: #d4dcf5; overflow-wrap: anywhere; }
 
+/* 16px nos campos em qualquer largura: abaixo disso o iPhone dá zoom ao tocar (inclusive deitado e no iPad) */
+body.admin input:not([type="checkbox"]):not([type="radio"]), body.admin select, body.admin textarea { font-size: 16px !important; }
+
 /* -------------------- Celular -------------------- */
 @media (max-width: 767px) {
-  /* 16px nos campos: abaixo disso o iPhone dá zoom ao tocar */
-  body.admin input:not([type="checkbox"]):not([type="radio"]), body.admin select, body.admin textarea { font-size: 16px !important; min-height: 2.875rem; }
+  body.admin input:not([type="checkbox"]):not([type="radio"]), body.admin select, body.admin textarea { min-height: 2.875rem; }
   body.admin header { padding: 1.5rem 1.25rem 1rem; }
   body.admin main { padding-left: 1.25rem; padding-right: 1.25rem; }
   body.admin header button:not(.logout-btn), .preset-btn, .tab-btn, .fin-tab-btn { min-height: 2.75rem; }
@@ -171,3 +173,8 @@ body.admin .bg-black\/40 { background-color: rgba(0, 0, 0, 0.55); backdrop-filte
   .admin-nav button span { font-size: 0.6875rem; }
   .admin-nav button { min-width: 3.75rem; }
 }
+
+/* "Sair" sempre no canto do cabeçalho, sem ocupar uma linha só para ele */
+body.admin header { position: relative; }
+body.admin header .logout-btn { position: absolute; top: 1.25rem; right: 1rem; }
+body.admin header h1 { padding-right: 4rem; }
