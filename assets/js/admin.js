@@ -14,8 +14,10 @@
     }
   }
 
+  // Só leva ao painel quando quem está na tela de login entra: a renovação automática do
+  // token também dispara este evento e não pode tirar o Osvair do financeiro ou dos recibos.
   window.sb.auth.onAuthStateChange((_event, session) => {
-    if (session) showDashboard();
+    if (session && !el('view-login').classList.contains('hidden')) showDashboard();
   });
 
   el('login-form').addEventListener('submit', async (e) => {
@@ -131,7 +133,27 @@
     return `https://wa.me/${row.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`;
   }
 
+  // Contagem em cada aba e a próxima corrida confirmada, para o que precisa de atenção aparecer de cara
+  function renderOverview() {
+    document.querySelectorAll('[data-count-for]').forEach((span) => {
+      const n = allBookings.filter((b) => matchesTab(b.status, span.dataset.countFor)).length;
+      span.textContent = n ? String(n) : '';
+    });
+    const hoje = new Date();
+    const hojeISO = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+    const agora = `${String(hoje.getHours()).padStart(2, '0')}:${String(hoje.getMinutes()).padStart(2, '0')}`;
+    const prox = allBookings.find((b) => b.status === 'confirmado' && (b.data > hojeISO || (b.data === hojeISO && b.horario.slice(0, 5) >= agora)));
+    el('next-ride').classList.toggle('hidden', !prox);
+    if (!prox) return;
+    const [y, m, d] = prox.data.split('-').map(Number);
+    const dia = new Date(y, m - 1, d).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const quando = prox.data === hojeISO ? 'Hoje' : dia.charAt(0).toUpperCase() + dia.slice(1);
+    el('next-when').textContent = `${quando}, ${prox.horario.slice(0, 5)}`;
+    el('next-who').textContent = `${prox.nome_completo}: ${prox.origem} para ${prox.destino}`;
+  }
+
   function renderList() {
+    renderOverview();
     const filtered = allBookings.filter((b) => matchesTab(b.status, currentTab));
     el('list-empty').classList.toggle('hidden', filtered.length > 0);
     el('list').innerHTML = '';

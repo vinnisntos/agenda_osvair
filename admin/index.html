@@ -69,19 +69,26 @@
     <div class="flex items-center gap-2 flex-wrap justify-end">
       <button id="btn-novo-agendamento" class="text-xs bg-gray-900 text-white rounded-full px-3.5 py-2 font-medium">Novo agendamento</button>
       <button id="btn-bloquear" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Bloquear horário</button>
-      <button id="btn-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
-      <button id="btn-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
-      <button id="btn-logout" class="text-xs text-gray-400 px-2">Sair</button>
+      <button id="btn-ir-financeiro" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
+      <button id="btn-ir-recibos" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
+      <button id="btn-logout" class="logout-btn text-sm text-gray-400">Sair</button>
     </div>
   </header>
 
+  <!-- Próxima corrida confirmada -->
+  <section id="next-ride" class="hidden mx-6 mb-1 next-ride" aria-live="polite">
+    <p class="next-label">Próxima corrida</p>
+    <p class="next-when" id="next-when"></p>
+    <p class="next-who" id="next-who"></p>
+  </section>
+
   <!-- Tabs -->
   <div class="flex gap-1 px-6 pt-4 overflow-x-auto">
-    <button data-tab="solicitado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Solicitações</button>
-    <button data-tab="orcamento_enviado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Orçamentos</button>
-    <button data-tab="confirmado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Confirmados</button>
-    <button data-tab="concluido" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Concluídos</button>
-    <button data-tab="recusado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Recusados</button>
+    <button data-tab="solicitado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Solicitações<span class="tab-count" data-count-for="solicitado"></span></button>
+    <button data-tab="orcamento_enviado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Orçamentos<span class="tab-count" data-count-for="orcamento_enviado"></span></button>
+    <button data-tab="confirmado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Confirmados<span class="tab-count" data-count-for="confirmado"></span></button>
+    <button data-tab="concluido" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Concluídos<span class="tab-count" data-count-for="concluido"></span></button>
+    <button data-tab="recusado" class="tab-btn text-sm font-medium px-3.5 py-2 rounded-full whitespace-nowrap">Recusados<span class="tab-count" data-count-for="recusado"></span></button>
   </div>
 
   <main class="px-6 py-5">
@@ -99,9 +106,9 @@
       <h1 class="panel-title">Financeiro</h1>
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
-      <button id="btn-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
-      <button id="btn-fin-ir-recibos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
-      <button id="btn-logout-financeiro" class="text-xs text-gray-400 px-2">Sair</button>
+      <button id="btn-ir-agendamentos" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
+      <button id="btn-fin-ir-recibos" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Recibos</button>
+      <button id="btn-logout-financeiro" class="logout-btn text-sm text-gray-400">Sair</button>
     </div>
   </header>
 
@@ -211,9 +218,9 @@
       <h1 class="panel-title">Recibos</h1>
     </div>
     <div class="flex items-center gap-2 flex-wrap justify-end">
-      <button id="btn-rec-ir-agendamentos" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
-      <button id="btn-rec-ir-financeiro" class="text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
-      <button id="btn-logout-recibos" class="text-xs text-gray-400 px-2">Sair</button>
+      <button id="btn-rec-ir-agendamentos" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Agendamentos</button>
+      <button id="btn-rec-ir-financeiro" class="header-nav text-xs border border-gray-200 rounded-full px-3.5 py-2 font-medium text-gray-700">Financeiro</button>
+      <button id="btn-logout-recibos" class="logout-btn text-sm text-gray-400">Sair</button>
     </div>
   </header>
 
@@ -589,11 +596,30 @@
   </div>
 </div>
 
+<!-- ===================== NAVEGAÇÃO INFERIOR ===================== -->
+<nav id="admin-nav" class="admin-nav hidden" aria-label="Seções do painel">
+  <button type="button" data-go="dashboard" aria-current="page">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    <span>Agenda</span>
+  </button>
+  <button type="button" data-go="financeiro">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+    <span>Financeiro</span>
+  </button>
+  <button type="button" data-go="recibos">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+    <span>Recibos</span>
+  </button>
+  <button type="button" class="nav-new" data-new aria-label="Novo agendamento">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+</nav>
+
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="../assets/js/bootstrap.js" data-next="../assets/js/admin.js,../assets/js/financeiro.js,../assets/js/recibos.js"></script>
+<script src="../assets/js/bootstrap.js" data-next="../assets/js/admin.js,../assets/js/financeiro.js,../assets/js/recibos.js,../assets/js/admin-nav.js"></script>
 </body>
 </html>

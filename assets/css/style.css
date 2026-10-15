@@ -126,3 +126,48 @@ body.admin .bg-black\/40 { background-color: rgba(0, 0, 0, 0.55); backdrop-filte
   body.admin header > div:last-child { justify-content: flex-start; }
   .panel-title { font-size: 1.75rem; }
 }
+
+/* -------------------- Navegação inferior (vidro flutuante) -------------------- */
+.admin-nav { position: fixed; left: 50%; bottom: calc(1rem + env(safe-area-inset-bottom)); z-index: 40; transform: translateX(-50%); display: flex; align-items: center; gap: 0.25rem; padding: 0.375rem; border-radius: 999px; background: rgba(20, 20, 24, 0.7); border: 1px solid var(--line); backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: 0 16px 50px -14px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06); }
+.admin-nav.hidden { display: none; }
+.admin-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.125rem; min-width: 4.5rem; min-height: 3.25rem; padding: 0 0.75rem; border-radius: 999px; color: var(--muted); font-size: 0.75rem; font-weight: 500; }
+.admin-nav button:hover { color: var(--fg); background: var(--glass-2); }
+.admin-nav button[aria-current="page"] { color: #0a0a0b; background: var(--fg); }
+.admin-nav .nav-new { min-width: 3.25rem; width: 3.25rem; padding: 0; margin-left: 0.25rem; background: var(--accent); color: #fff; }
+.admin-nav .nav-new:hover { background: #7aa2ff; color: #fff; }
+/* a barra assume a navegação entre telas; o conteúdo ganha folga para não ficar por baixo dela */
+.header-nav { display: none !important; }
+#view-dashboard, #view-financeiro, #view-recibos { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
+.logout-btn { min-height: 2.75rem; padding: 0 0.75rem; border-radius: 999px; }
+.logout-btn:hover { color: var(--fg); background: var(--glass-2); }
+
+/* contagem nas abas */
+.tab-count:not(:empty) { display: inline-grid; place-items: center; min-width: 1.25rem; height: 1.25rem; margin-left: 0.4rem; padding: 0 0.35rem; border-radius: 999px; background: var(--accent); color: #fff; font-size: 0.6875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tab-btn.active .tab-count:not(:empty) { background: #0a0a0b; color: var(--fg); }
+
+/* próxima corrida */
+.next-ride { margin-top: 0.25rem; padding: 0.9rem 1.1rem; border-radius: 1.25rem; background: var(--accent-soft); border: 1px solid rgba(91, 140, 255, 0.35); }
+.next-ride .next-label { font-size: 0.75rem; color: #b7c6f5; }
+.next-ride .next-when { margin-top: 0.15rem; font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; }
+.next-ride .next-who { margin-top: 0.15rem; font-size: 0.875rem; color: #d4dcf5; overflow-wrap: anywhere; }
+
+/* -------------------- Celular -------------------- */
+@media (max-width: 767px) {
+  /* 16px nos campos: abaixo disso o iPhone dá zoom ao tocar */
+  body.admin input:not([type="checkbox"]):not([type="radio"]), body.admin select, body.admin textarea { font-size: 16px !important; min-height: 2.875rem; }
+  body.admin header { padding: 1.5rem 1.25rem 1rem; }
+  body.admin main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  body.admin header button:not(.logout-btn), .preset-btn, .tab-btn, .fin-tab-btn { min-height: 2.75rem; }
+  body.admin header button:not(.logout-btn) { padding-left: 1rem; padding-right: 1rem; font-size: 0.8125rem; }
+  .action-btn { min-height: 2.5rem; padding: 0.55rem 1rem; }
+  .next-ride { margin-left: 1.25rem; margin-right: 1.25rem; }
+  body.admin .flex.gap-1.px-6 { padding-left: 1.25rem; padding-right: 1.25rem; }
+  /* janelas (modais) ocupam a largura e respeitam a área segura */
+  body.admin .fixed.inset-0 > .bg-white { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+  body.admin .fixed.inset-0 button[id^="btn-close"] { min-width: 2.75rem; min-height: 2.75rem; font-size: 1.5rem; }
+  .admin-nav button { min-width: 4.25rem; padding: 0 0.5rem; }
+}
+@media (max-width: 360px) {
+  .admin-nav button span { font-size: 0.6875rem; }
+  .admin-nav button { min-width: 3.75rem; }
+}

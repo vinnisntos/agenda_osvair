@@ -1,0 +1,41 @@
+// Barra de navegação inferior do painel (Agenda, Financeiro, Recibos e "+" novo agendamento).
+// Reaproveita os botões de navegação já existentes, para não duplicar a lógica de cada tela.
+(function () {
+  const el = (id) => document.getElementById(id);
+  const nav = el('admin-nav');
+  const views = { dashboard: el('view-dashboard'), financeiro: el('view-financeiro'), recibos: el('view-recibos') };
+  const buttons = [...nav.querySelectorAll('[data-go]')];
+
+  function go(target) {
+    const current = Object.keys(views).find((k) => !views[k].classList.contains('hidden'));
+    if (current === target) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (target === 'financeiro') {
+      views.recibos.classList.add('hidden');
+      el('btn-ir-financeiro').click(); // carrega o período na primeira vez
+    } else if (target === 'recibos') {
+      el('btn-ir-recibos').click();
+    } else {
+      views.financeiro.classList.add('hidden');
+      views.recibos.classList.add('hidden');
+      views.dashboard.classList.remove('hidden');
+    }
+    window.scrollTo({ top: 0 });
+  }
+
+  // a barra acompanha a tela visível (inclusive quando a troca vem de outro botão) e some no login
+  function sync() {
+    const current = Object.keys(views).find((k) => !views[k].classList.contains('hidden'));
+    nav.classList.toggle('hidden', !current);
+    buttons.forEach((b) => {
+      if (b.dataset.go === current) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach((b) => b.addEventListener('click', () => go(b.dataset.go)));
+  nav.querySelector('[data-new]').addEventListener('click', () => el('btn-novo-agendamento').click());
+
+  const obs = new MutationObserver(sync);
+  [...Object.values(views), el('view-login')].forEach((v) => obs.observe(v, { attributes: true, attributeFilter: ['class'] }));
+  sync();
+})();
