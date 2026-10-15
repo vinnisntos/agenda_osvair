@@ -121,7 +121,7 @@
 
   function buildOrcamentoWhatsAppLink(row) {
     const msg = [
-      `Olá ${row.nome_completo}! Segue o orçamento do seu transporte:`,
+      `Olá ${row.nome_completo}! Segue o orçamento do seu transporte com a Blackline Executivo:`,
       ``,
       `Data/Horário: ${fmtData(row.data)} às ${row.horario.slice(0,5)}`,
       `Valor: ${fmtMoeda(row.orcamento_valor)}`,

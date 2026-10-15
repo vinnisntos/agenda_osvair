@@ -454,7 +454,7 @@
     const doc = new jsPDF();
 
     doc.setFontSize(14);
-    doc.text('Relatório financeiro — Osvair Dos Santos', 14, 16);
+    doc.text('Relatório financeiro — Blackline Executivo', 14, 16);
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text(`Período: ${periodoLabel()}`, 14, 23);
@@ -520,7 +520,7 @@
     const s = computeSummary();
 
     const resumoSheet = XLSX.utils.aoa_to_sheet([
-      ['Relatório financeiro — Osvair Dos Santos'],
+      ['Relatório financeiro — Blackline Executivo'],
       [`Período: ${periodoLabel()}`],
       [],
       ['Bruto particular', s.particularTotal],

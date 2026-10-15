@@ -42,7 +42,8 @@ body.admin .fixed.inset-0 > .bg-white { border: 1px solid var(--line); }
 }
 
 /* títulos */
-.wordmark { font-size: 2.75rem; font-weight: 600; letter-spacing: -0.045em; line-height: 1; color: var(--fg); }
+.wordmark { font-size: 2.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1; color: var(--fg); }
+.wordmark-sub { margin-top: 0.4rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5em; text-transform: uppercase; color: var(--muted); }
 .panel-title { font-size: 1.875rem; font-weight: 600; letter-spacing: -0.035em; line-height: 1.1; color: var(--fg); }
 
 /* campos (padrão Input do shadcn) */

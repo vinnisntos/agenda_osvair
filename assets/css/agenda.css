@@ -57,6 +57,11 @@ a { color: inherit; }
 .island a.pill { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: 999px; font-size: 0.875rem; color: var(--muted); text-decoration: none; transition: background-color var(--t-fast) var(--spring), color var(--t-fast) var(--spring); }
 .island a.pill:hover { background: var(--glass-2); color: var(--fg); }
 
+  /* marca Blackline Executivo na navegação */
+  .brand-lock { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1; font-weight: 600; font-size: 0.875rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .brand-lock small { margin-top: 0.2rem; font-size: 0.5625rem; font-weight: 500; letter-spacing: 0.46em; color: var(--muted); }
+  .island .who.brand { padding: 0 1rem; }
+
 /* ---------- página ---------- */
 .page { position: relative; z-index: 2; width: min(100% - 2rem, 76rem); margin: 0 auto; padding: 7.5rem 0 3rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30rem); gap: clamp(2rem, 6vw, 6rem); align-items: start; min-height: 100dvh; }
 
@@ -210,7 +215,7 @@ textarea.input { resize: none; min-height: 5.5rem; }
 @media (max-width: 480px) {
   .time-grid { grid-template-columns: repeat(3, 1fr); }
   .pair { grid-template-columns: 1fr; }
-  .island .who span { display: none; }
+  .island .who:not(.brand) span { display: none; }
 }
 
 /* ---------- responsividade fina (celular) ---------- */

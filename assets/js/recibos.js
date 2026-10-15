@@ -166,7 +166,7 @@
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(190, 190, 190);
-    doc.text('TRANSPORTE EXECUTIVO / EXECUTIVE TRANSPORTATION', margin, 29);
+    doc.text('BLACKLINE EXECUTIVO  ·  TRANSPORTE EXECUTIVO / EXECUTIVE TRANSPORTATION', margin, 29);
 
     const amount = formatAmount(data.valor);
     if (amount) {
