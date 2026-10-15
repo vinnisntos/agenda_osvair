@@ -6,168 +6,179 @@
 <title>Agendar corrida com Osvair dos Santos</title>
 <meta name="description" content="Agende seu transfer, viagem ou evento com Osvair dos Santos. Toyota Corolla Altis HV Hybrid 2023, conforto e pontualidade.">
 <meta name="robots" content="index, follow">
+<meta name="theme-color" content="#050506">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/agenda.css">
 </head>
 <body>
-<div class="shell" id="shell" data-step="step-welcome">
+<div class="ambient" aria-hidden="true"><img src="assets/img/rodovia.jpg" alt=""></div>
+<div class="grain" aria-hidden="true"></div>
 
-  <figure class="stage">
-    <img src="assets/img/osvair.jpg" width="896" height="840" alt="Osvair dos Santos, de terno cinza e gravata azul">
-  </figure>
+<nav class="island" aria-label="Principal">
+  <a class="who" href="https://osvairsantos.com.br"><img src="assets/img/osvair.jpg" alt=""><span>Osvair dos Santos</span></a>
+  <a class="pill wide" href="https://osvairsantos.com.br">Sobre</a>
+  <a class="pill" href="https://wa.me/5515988164662" target="_blank" rel="noopener">WhatsApp</a>
+</nav>
 
-  <div class="col">
-    <div class="col-inner">
-      <div class="top">
-        <a href="https://osvairsantos.com.br">osvairsantos.com.br</a>
-        <a href="https://wa.me/5515988164662" target="_blank" rel="noopener">WhatsApp (15) 98816-4662</a>
+<div class="page" id="shell" data-step="step-welcome">
+
+  <header class="intro">
+    <p class="eyebrow reveal">Transporte executivo em Sorocaba</p>
+    <h1 class="display reveal" style="--i:1">Sua corrida, <span>com hora marcada.</span></h1>
+    <p class="lede reveal" style="--i:2">Transfers para Guarulhos, Viracopos e Congonhas, viagens e eventos. A data só fica reservada depois que você aprova o valor.</p>
+
+    <div class="shell driver reveal" style="--i:3">
+      <div class="core">
+        <img src="assets/img/osvair.jpg" width="896" height="840" alt="Osvair dos Santos, de terno cinza e gravata azul">
+        <div>
+          <p class="name">Osvair dos Santos</p>
+          <p class="car">Toyota Corolla Altis HV Hybrid 2023</p>
+        </div>
       </div>
-
-      <header class="brand">
-        <h1 class="wordmark" aria-label="Osvair dos Santos">Osvair</h1>
-        <p class="muted">dos Santos, transporte executivo em Sorocaba. Toyota Corolla Altis HV Hybrid 2023.</p>
-      </header>
-
-      <main>
-        <ol id="progress-bar" class="progress hidden" aria-label="Etapas do pedido">
-          <li id="prog-1">Data</li>
-          <li id="prog-2">Seus dados</li>
-          <li id="prog-3">Enviado</li>
-        </ol>
-
-        <!-- Etapa 0: boas-vindas -->
-        <section id="step-welcome" class="step" aria-labelledby="t-welcome">
-          <h2 class="head" id="t-welcome">Agende sua corrida</h2>
-          <p>Transfers, viagens e eventos com hora marcada. A data só fica reservada depois que você aprova o valor.</p>
-          <ol class="how">
-            <li>Escolha o dia e o horário.</li>
-            <li>Conte de onde sai, para onde vai e quantas pessoas viajam.</li>
-            <li>Receba o orçamento pelo WhatsApp e aprove pelo link.</li>
-          </ol>
-          <button id="btn-start" class="btn">Escolher data</button>
-        </section>
-
-        <!-- Etapa 1: data e horário -->
-        <section id="step-datetime" class="step hidden" aria-labelledby="t-datetime">
-          <h2 class="head" id="t-datetime">Data e horário</h2>
-          <p>Escolha o dia e um horário livre para a sua corrida.</p>
-
-          <div id="calendar"></div>
-
-          <div id="time-section" class="times hidden">
-            <h3>Horários disponíveis</h3>
-            <p id="time-loading" class="note hidden">Carregando horários…</p>
-            <p id="time-empty" class="note-box hidden">Nenhum horário disponível nesta data.</p>
-            <div id="time-grid" class="time-grid" role="group" aria-label="Horários"></div>
-          </div>
-
-          <button id="btn-to-form" class="btn next" disabled>Continuar</button>
-        </section>
-
-        <!-- Etapa 2: dados da corrida -->
-        <section id="step-form" class="step hidden" aria-labelledby="t-form">
-          <button id="btn-back-to-date" class="link-btn" type="button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-            Trocar data ou horário
-          </button>
-          <h2 class="head" id="t-form" style="margin-top:1rem">Seus dados</h2>
-
-          <div class="summary">
-            <div>
-              <p class="label">Data e horário escolhidos</p>
-              <p id="summary-datetime" class="value"></p>
-            </div>
-          </div>
-
-          <form id="booking-form" class="fields" novalidate>
-            <div class="field">
-              <label for="f-nome">Nome completo</label>
-              <input class="input" id="f-nome" required name="nome_completo" type="text" placeholder="Seu nome" autocomplete="name">
-            </div>
-            <div class="field">
-              <label for="f-whats">WhatsApp ou telefone</label>
-              <input class="input" id="f-whats" required name="whatsapp" type="tel" placeholder="(15) 90000-0000" autocomplete="tel" inputmode="tel">
-              <p class="desc">O orçamento chega neste número.</p>
-            </div>
-            <div class="field">
-              <label for="f-origem">Origem</label>
-              <input class="input" id="f-origem" required name="origem" type="text" placeholder="Endereço de partida" autocomplete="street-address">
-            </div>
-            <div class="field">
-              <label for="f-destino">Destino</label>
-              <input class="input" id="f-destino" required name="destino" type="text" placeholder="Endereço de chegada ou aeroporto">
-            </div>
-            <div class="pair">
-              <div class="field">
-                <label for="f-pass">Passageiros</label>
-                <select class="input" id="f-pass" name="passageiros">
-                  <option value="1">1 passageiro</option>
-                  <option value="2">2 passageiros</option>
-                  <option value="3">3 passageiros</option>
-                  <option value="4">4 passageiros</option>
-                  <option value="5">5 passageiros</option>
-                  <option value="6">6 passageiros</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="f-malas">Malas</label>
-                <select class="input" id="f-malas" name="malas">
-                  <option value="0">Nenhuma</option>
-                  <option value="1">1 mala</option>
-                  <option value="2">2 malas</option>
-                  <option value="3">3 malas</option>
-                  <option value="4">4 malas</option>
-                  <option value="5">5 ou mais</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label for="f-obs">Observações <span>(opcional)</span></label>
-              <textarea class="input" id="f-obs" name="observacoes" rows="3" placeholder="Número do voo, bebê conforto, viagem com pet, bagagem extra…"></textarea>
-            </div>
-
-            <p id="form-error" class="error hidden" role="alert"></p>
-
-            <button type="submit" id="btn-submit" class="btn">
-              <span id="btn-submit-text">Pedir orçamento</span>
-            </button>
-          </form>
-        </section>
-
-        <!-- Etapa 3: enviado -->
-        <section id="step-success" class="step hidden" aria-labelledby="t-success">
-          <div class="done-mark" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-          </div>
-          <h2 class="head" id="t-success">Pedido enviado</h2>
-          <p>O Osvair prepara o orçamento e manda pelo WhatsApp. A data só fica reservada depois que você aprova o valor.</p>
-
-          <dl class="facts">
-            <div><dt>Data e horário</dt><dd id="res-datetime"></dd></div>
-            <div><dt>Passageiro</dt><dd id="res-nome"></dd></div>
-            <div><dt>Origem</dt><dd id="res-origem"></dd></div>
-            <div><dt>Destino</dt><dd id="res-destino"></dd></div>
-            <div><dt>Situação</dt><dd><span class="badge">Aguardando orçamento</span></dd></div>
-          </dl>
-
-          <a id="btn-whatsapp" class="btn" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.04 4C7.5 4 3.8 7.7 3.8 12.24c0 1.62.48 3.14 1.31 4.42L4 20l3.44-1.08a8.82 8.82 0 0 0 4.58 1.26h.01c4.54 0 8.24-3.7 8.24-8.24 0-2.2-.87-4.27-2.42-5.82Zm-5.55 12.68h-.01a7.3 7.3 0 0 1-3.72-1.02l-.27-.16-2.77.87.88-2.7-.18-.28a7.28 7.28 0 0 1-1.12-3.89c0-4.02 3.28-7.3 7.31-7.3a7.26 7.26 0 0 1 7.29 7.31c0 4.03-3.28 7.17-7.4 7.17Zm4-5.4c-.22-.11-1.3-.64-1.5-.71-.2-.08-.35-.11-.5.11-.14.22-.57.71-.7.86-.13.14-.26.16-.48.05-1.3-.65-2.15-1.16-3.01-2.63-.23-.39.23-.36.65-1.2.07-.14.04-.27-.02-.38-.07-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38-.13-.01-.28-.01-.43-.01-.14 0-.38.05-.58.27-.2.22-.77.75-.77 1.83 0 1.08.79 2.12.9 2.27.11.14 1.53 2.34 3.72 3.19 1.85.72 2.23.58 2.63.54.4-.04 1.3-.53 1.48-1.04.18-.51.18-.95.13-1.04-.05-.1-.2-.16-.42-.27Z"/></svg>
-            Acompanhar no WhatsApp
-          </a>
-          <button id="btn-new-booking" class="link-btn" type="button" style="margin-top:0.75rem">Fazer outro pedido</button>
-        </section>
-      </main>
     </div>
+    <div class="chips reveal" style="--i:4">
+      <span class="chip">Mais de 20 anos na estrada</span>
+      <span class="chip">Sem divisão de corrida</span>
+      <span class="chip">Pix e cartão</span>
+    </div>
+  </header>
 
-    <footer class="foot">
-      <span>Pix, cartão de crédito e débito.</span>
-      <a href="admin/">Área do administrador</a>
-    </footer>
-  </div>
+  <main class="shell panel reveal" style="--i:2">
+    <div class="core">
+      <ol id="progress-bar" class="progress hidden" aria-label="Etapas do pedido">
+        <li id="prog-1">Data</li>
+        <li id="prog-2">Seus dados</li>
+        <li id="prog-3">Enviado</li>
+      </ol>
+
+      <!-- Etapa 0: boas-vindas -->
+      <section id="step-welcome" class="step" aria-labelledby="t-welcome">
+        <h2 id="t-welcome">Como funciona</h2>
+        <p>Três passos, sem cadastro.</p>
+        <ol class="how">
+          <li>Escolha o dia e o horário</li>
+          <li>Conte de onde sai e para onde vai</li>
+          <li>Aprove o orçamento pelo WhatsApp</li>
+        </ol>
+        <button id="btn-start" class="btn"><span>Escolher data</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></button>
+      </section>
+
+      <!-- Etapa 1: data e horário -->
+      <section id="step-datetime" class="step hidden" aria-labelledby="t-datetime">
+        <h2 id="t-datetime">Data e horário</h2>
+        <p>Escolha o dia e um horário livre.</p>
+
+        <div id="calendar"></div>
+
+        <div id="time-section" class="times hidden">
+          <h3>Horários disponíveis</h3>
+          <p id="time-loading" class="note hidden">Carregando horários…</p>
+          <p id="time-empty" class="note-box hidden">Nenhum horário disponível nesta data.</p>
+          <div id="time-grid" class="time-grid" role="group" aria-label="Horários"></div>
+        </div>
+
+        <button id="btn-to-form" class="btn next" disabled><span>Continuar</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></button>
+      </section>
+
+      <!-- Etapa 2: dados da corrida -->
+      <section id="step-form" class="step hidden" aria-labelledby="t-form">
+        <button id="btn-back-to-date" class="link-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          Trocar data ou horário
+        </button>
+        <h2 id="t-form">Seus dados</h2>
+
+        <div class="summary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <div>
+            <p class="label">Data e horário escolhidos</p>
+            <p id="summary-datetime" class="value"></p>
+          </div>
+        </div>
+
+        <form id="booking-form" class="fields" novalidate>
+          <div class="field">
+            <label for="f-nome">Nome completo</label>
+            <input class="input" id="f-nome" required name="nome_completo" type="text" placeholder="Seu nome" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-whats">WhatsApp ou telefone</label>
+            <input class="input" id="f-whats" required name="whatsapp" type="tel" placeholder="(15) 90000-0000" autocomplete="tel" inputmode="tel">
+            <p class="desc">O orçamento chega neste número.</p>
+          </div>
+          <div class="field">
+            <label for="f-origem">Origem</label>
+            <input class="input" id="f-origem" required name="origem" type="text" placeholder="Endereço de partida" autocomplete="street-address">
+          </div>
+          <div class="field">
+            <label for="f-destino">Destino</label>
+            <input class="input" id="f-destino" required name="destino" type="text" placeholder="Endereço de chegada ou aeroporto">
+          </div>
+          <div class="pair">
+            <div class="field">
+              <label for="f-pass">Passageiros</label>
+              <select class="input" id="f-pass" name="passageiros">
+                <option value="1">1 passageiro</option>
+                <option value="2">2 passageiros</option>
+                <option value="3">3 passageiros</option>
+                <option value="4">4 passageiros</option>
+                <option value="5">5 passageiros</option>
+                <option value="6">6 passageiros</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-malas">Malas</label>
+              <select class="input" id="f-malas" name="malas">
+                <option value="0">Nenhuma</option>
+                <option value="1">1 mala</option>
+                <option value="2">2 malas</option>
+                <option value="3">3 malas</option>
+                <option value="4">4 malas</option>
+                <option value="5">5 ou mais</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-obs">Observações <span>(opcional)</span></label>
+            <textarea class="input" id="f-obs" name="observacoes" rows="3" placeholder="Número do voo, bebê conforto, viagem com pet, bagagem extra…"></textarea>
+          </div>
+
+          <p id="form-error" class="error hidden" role="alert"></p>
+
+          <button type="submit" id="btn-submit" class="btn"><span id="btn-submit-text">Pedir orçamento</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></button>
+        </form>
+      </section>
+
+      <!-- Etapa 3: enviado -->
+      <section id="step-success" class="step hidden" aria-labelledby="t-success">
+        <div class="done-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h2 id="t-success">Pedido enviado</h2>
+        <p>O Osvair prepara o orçamento e manda pelo WhatsApp. A data só fica reservada depois que você aprova o valor.</p>
+
+        <dl class="facts">
+          <div><dt>Data e horário</dt><dd id="res-datetime"></dd></div>
+          <div><dt>Passageiro</dt><dd id="res-nome"></dd></div>
+          <div><dt>Origem</dt><dd id="res-origem"></dd></div>
+          <div><dt>Destino</dt><dd id="res-destino"></dd></div>
+          <div><dt>Situação</dt><dd><span class="badge">Aguardando orçamento</span></dd></div>
+        </dl>
+
+        <a id="btn-whatsapp" class="btn" target="_blank" rel="noopener"><span style="display:inline-flex;align-items:center;gap:0.6rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.04 4C7.5 4 3.8 7.7 3.8 12.24c0 1.62.48 3.14 1.31 4.42L4 20l3.44-1.08a8.82 8.82 0 0 0 4.58 1.26h.01c4.54 0 8.24-3.7 8.24-8.24 0-2.2-.87-4.27-2.42-5.82Zm-5.55 12.68h-.01a7.3 7.3 0 0 1-3.72-1.02l-.27-.16-2.77.87.88-2.7-.18-.28a7.28 7.28 0 0 1-1.12-3.89c0-4.02 3.28-7.3 7.31-7.3a7.26 7.26 0 0 1 7.29 7.31c0 4.03-3.28 7.17-7.4 7.17Zm4-5.4c-.22-.11-1.3-.64-1.5-.71-.2-.08-.35-.11-.5.11-.14.22-.57.71-.7.86-.13.14-.26.16-.48.05-1.3-.65-2.15-1.16-3.01-2.63-.23-.39.23-.36.65-1.2.07-.14.04-.27-.02-.38-.07-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38-.13-.01-.28-.01-.43-.01-.14 0-.38.05-.58.27-.2.22-.77.75-.77 1.83 0 1.08.79 2.12.9 2.27.11.14 1.53 2.34 3.72 3.19 1.85.72 2.23.58 2.63.54.4-.04 1.3-.53 1.48-1.04.18-.51.18-.95.13-1.04-.05-.1-.2-.16-.42-.27Z"/></svg>Abrir no WhatsApp</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>
+        <button id="btn-new-booking" class="link-btn" type="button" style="margin-top:0.5rem">Fazer outro pedido</button>
+      </section>
+    </div>
+  </main>
 </div>
+
+<footer class="foot">
+  <span>Foto de fundo: “SP-280 Rodovia Castello Branco”, James Martins, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:SP-280-RODOVIA_CASTELLO_BRANCO_-_panoramio.jpg">Wikimedia Commons</a></span>
+  <a href="admin/">Área do administrador</a>
+</footer>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="assets/js/bootstrap.js" data-next="assets/js/calendar.js,assets/js/booking.js"></script>

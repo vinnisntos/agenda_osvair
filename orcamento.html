@@ -5,106 +5,115 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Seu orçamento com Osvair dos Santos</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050506">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/agenda.css">
 </head>
 <body>
-<div class="shell" id="shell" data-step="step-welcome">
+<div class="ambient" aria-hidden="true"><img src="assets/img/rodovia.jpg" alt=""></div>
+<div class="grain" aria-hidden="true"></div>
 
-  <figure class="stage">
-    <img src="assets/img/osvair.jpg" width="896" height="840" alt="Osvair dos Santos, de terno cinza e gravata azul">
-  </figure>
+<nav class="island" aria-label="Principal">
+  <a class="who" href="https://osvairsantos.com.br"><img src="assets/img/osvair.jpg" alt=""><span>Osvair dos Santos</span></a>
+  <a class="pill wide" href="https://osvairsantos.com.br">Sobre</a>
+  <a class="pill" href="https://wa.me/5515988164662" target="_blank" rel="noopener">WhatsApp</a>
+</nav>
 
-  <div class="col">
-    <div class="col-inner">
-      <div class="top">
-        <a href="https://osvairsantos.com.br">osvairsantos.com.br</a>
-        <a href="https://wa.me/5515988164662" target="_blank" rel="noopener">WhatsApp (15) 98816-4662</a>
+<div class="page" id="shell" data-step="step-welcome">
+
+  <header class="intro">
+    <p class="eyebrow reveal">Transporte executivo em Sorocaba</p>
+    <h1 class="display reveal" style="--i:1">Seu orçamento <span>de transporte.</span></h1>
+    <p class="lede reveal" style="--i:2">Confira o valor e os detalhes da corrida. Ao aprovar, a data fica reservada para você.</p>
+
+    <div class="shell driver reveal" style="--i:3">
+      <div class="core">
+        <img src="assets/img/osvair.jpg" width="896" height="840" alt="Osvair dos Santos, de terno cinza e gravata azul">
+        <div>
+          <p class="name">Osvair dos Santos</p>
+          <p class="car">Toyota Corolla Altis HV Hybrid 2023</p>
+        </div>
       </div>
+    </div>
+    <div class="chips reveal" style="--i:4">
+      <span class="chip">Mais de 20 anos na estrada</span>
+      <span class="chip">Sem divisão de corrida</span>
+      <span class="chip">Pix e cartão</span>
+    </div>
+  </header>
 
-      <header class="brand">
-        <p class="wordmark" aria-hidden="true">Osvair</p>
-        <h1 class="lead" style="margin-top:0.85rem">Seu orçamento de transporte</h1>
-      </header>
+  <main class="shell panel reveal" style="--i:2">
+    <div class="core">
+      <p id="loading" class="note">Carregando…</p>
 
-      <main>
-        <p id="loading" class="note">Carregando…</p>
+      <section id="not-found" class="step hidden" aria-labelledby="t-nf">
+        <h2 id="t-nf">Link inválido</h2>
+        <p>Não encontramos esse orçamento. Confira o link recebido pelo WhatsApp ou fale com o Osvair.</p>
+      </section>
 
-        <section id="not-found" class="hidden" aria-labelledby="t-nf">
-          <h2 class="head" id="t-nf" style="margin-bottom:0.9rem">Link inválido</h2>
-          <p>Não encontramos esse orçamento. Confira o link recebido pelo WhatsApp ou fale com o Osvair.</p>
+      <div id="content" class="hidden">
+        <section id="state-orcamento" class="step hidden" aria-labelledby="t-valor">
+          <p class="price-label" id="t-valor">Valor da corrida</p>
+          <p id="v-valor" class="price"></p>
+          <p id="v-obs" class="price-obs"></p>
         </section>
 
-        <div id="content" class="hidden step">
-          <!-- orçamento enviado: o valor é a primeira coisa -->
-          <section id="state-orcamento" class="hidden" aria-labelledby="t-valor">
-            <p class="price-label" id="t-valor">Valor da corrida</p>
-            <p id="v-valor" class="price"></p>
-            <p id="v-obs" class="price-obs muted"></p>
-          </section>
+        <section id="state-solicitado" class="step hidden">
+          <h2>Aguardando orçamento</h2>
+          <p>O Osvair ainda está preparando o valor. Este mesmo link chega atualizado pelo WhatsApp quando estiver pronto.</p>
+        </section>
 
-          <section id="state-solicitado" class="hidden">
-            <h2 class="head" style="margin-bottom:0.9rem">Aguardando orçamento</h2>
-            <p>O Osvair ainda está preparando o valor da sua corrida. Este mesmo link chega atualizado pelo WhatsApp quando estiver pronto.</p>
-          </section>
+        <section id="state-confirmado" class="step hidden">
+          <div class="done-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h2>Data reservada</h2>
+          <p>Orçamento aprovado. O Osvair entra em contato para combinar os últimos detalhes.</p>
+        </section>
 
-          <section id="state-confirmado" class="hidden">
-            <div class="done-mark" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            </div>
-            <h2 class="head" style="margin-bottom:0.9rem">Data reservada</h2>
-            <p>Orçamento aprovado. O Osvair entra em contato para combinar os últimos detalhes.</p>
-          </section>
+        <section id="state-recusado" class="step hidden">
+          <h2>Orçamento recusado</h2>
+          <p>Se mudar de ideia, fale com o Osvair pelo WhatsApp.</p>
+        </section>
 
-          <section id="state-recusado" class="hidden">
-            <h2 class="head" style="margin-bottom:0.9rem">Orçamento recusado</h2>
-            <p>Se mudar de ideia, fale com o Osvair pelo WhatsApp.</p>
-          </section>
+        <section id="state-concluido" class="step hidden">
+          <h2>Corrida concluída</h2>
+          <p>Obrigado por viajar com o Osvair.</p>
+        </section>
 
-          <section id="state-concluido" class="hidden">
-            <h2 class="head" style="margin-bottom:0.9rem">Corrida concluída</h2>
-            <p>Obrigado por viajar com o Osvair.</p>
-          </section>
+        <dl class="facts">
+          <div><dt>Data e horário</dt><dd id="v-datetime"></dd></div>
+          <div><dt>Passageiro</dt><dd id="v-nome"></dd></div>
+          <div><dt>Origem</dt><dd id="v-origem"></dd></div>
+          <div><dt>Destino</dt><dd id="v-destino"></dd></div>
+        </dl>
 
-          <dl class="facts" style="margin-top:2rem">
-            <div><dt>Data e horário</dt><dd id="v-datetime"></dd></div>
-            <div><dt>Passageiro</dt><dd id="v-nome"></dd></div>
-            <div><dt>Origem</dt><dd id="v-origem"></dd></div>
-            <div><dt>Destino</dt><dd id="v-destino"></dd></div>
-          </dl>
-
-          <!-- ações do orçamento: ficam abaixo do resumo -->
-          <div id="orcamento-acoes">
-            <p id="resposta-erro" class="error hidden" role="alert" style="margin-bottom:1rem"></p>
-
-            <button id="btn-aprovar" class="btn">
-              <span id="btn-aprovar-text">Aprovar e reservar minha data</span>
-            </button>
-
-            <div id="recusar-wrap">
-              <button id="btn-recusar" class="link-btn" type="button" style="margin-top:0.75rem">Não vou aceitar este orçamento</button>
-            </div>
-            <div id="recusar-confirm" class="hidden" style="margin-top:1.25rem">
-              <p style="margin-bottom:0.75rem">Tem certeza que quer recusar?</p>
-              <div class="btn-row">
-                <button id="btn-recusar-confirmar" class="btn btn-danger" type="button">Sim, recusar</button>
-                <button id="btn-recusar-cancelar" class="btn btn-soft" type="button">Voltar</button>
-              </div>
+        <div id="orcamento-acoes">
+          <p id="resposta-erro" class="error hidden" role="alert" style="margin-bottom:1rem"></p>
+          <button id="btn-aprovar" class="btn"><span id="btn-aprovar-text">Aprovar e reservar minha data</span><span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></button>
+          <div id="recusar-wrap">
+            <button id="btn-recusar" class="link-btn" type="button" style="margin-top:0.5rem">Não vou aceitar este orçamento</button>
+          </div>
+          <div id="recusar-confirm" class="hidden" style="margin-top:1rem">
+            <p class="muted" style="margin-bottom:0.75rem">Tem certeza que quer recusar?</p>
+            <div class="btn-row">
+              <button id="btn-recusar-confirmar" class="btn btn-center btn-danger" type="button">Sim, recusar</button>
+              <button id="btn-recusar-cancelar" class="btn btn-center btn-ghost" type="button">Voltar</button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
-
-    <footer class="foot">
-      <span>Pix, cartão de crédito e débito.</span>
-      <a href="./">Fazer outro pedido</a>
-    </footer>
-  </div>
+  </main>
 </div>
+
+<footer class="foot">
+  <span>Foto de fundo: “SP-280 Rodovia Castello Branco”, James Martins, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:SP-280-RODOVIA_CASTELLO_BRANCO_-_panoramio.jpg">Wikimedia Commons</a></span>
+  <a href="./">Fazer outro pedido</a>
+</footer>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="assets/js/bootstrap.js" data-next="assets/js/orcamento.js"></script>
