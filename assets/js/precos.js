@@ -40,15 +40,25 @@
     ['Viracopos / Hotel Fasano - Município Porto Feliz', 450, 337.5],
     ['[Adicional] Deslocamento adicional', 30, 22.5], ['[Adicional] Hora adicional', 50, 37.5],
     ['[Adicional] KM adicional', 4, 3]
-  ].map(([label, original, discounted]) => ({ label, original, discounted, additional: label.startsWith('[Adicional]') }));
+  ].map(([label, original, discounted]) => ({ label, original, discounted, additional: label.indexOf('[Adicional]') === 0 }));
 
-  const money = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-  const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const money = (value) => {
+    if (window.Intl && Intl.NumberFormat) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
+    return `R$ ${Number(value).toFixed(2).replace('.', ',')}`;
+  };
+  const normalize = (value) => {
+    const text = String(value).toLowerCase();
+    return typeof text.normalize === 'function'
+      ? text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : text;
+  };
 
   function render() {
     const query = normalize(el('precos-busca').value.trim());
     const onlyAdditional = el('precos-mostrar-adicionais').checked;
-    const filtered = entries.filter((entry) => (!query || normalize(entry.label).includes(query)) && (!onlyAdditional || entry.additional));
+    const filtered = entries.filter((entry) => (!query || normalize(entry.label).indexOf(query) !== -1) && (!onlyAdditional || entry.additional));
     const list = el('precos-lista');
     list.innerHTML = '';
     el('precos-empty').classList.toggle('hidden', filtered.length > 0);
@@ -58,15 +68,28 @@
       const item = document.createElement('article');
       item.className = 'price-item';
       item.setAttribute('role', 'listitem');
-      item.innerHTML = `
-        <div class="min-w-0">
-          <p class="price-item-title">${entry.label}</p>
-          <p class="price-item-original">Original: ${money(entry.original)}</p>
-        </div>
-        <div class="price-item-value">
-          <span class="price-item-label">Com 25% OFF</span>
-          <strong>${money(entry.discounted)}</strong>
-        </div>`;
+      const description = document.createElement('div');
+      description.className = 'min-w-0';
+      const title = document.createElement('p');
+      title.className = 'price-item-title';
+      title.textContent = entry.label;
+      const original = document.createElement('p');
+      original.className = 'price-item-original';
+      original.textContent = `Original: ${money(entry.original)}`;
+      description.appendChild(title);
+      description.appendChild(original);
+
+      const value = document.createElement('div');
+      value.className = 'price-item-value';
+      const label = document.createElement('span');
+      label.className = 'price-item-label';
+      label.textContent = 'Com 25% OFF';
+      const amount = document.createElement('strong');
+      amount.textContent = money(entry.discounted);
+      value.appendChild(label);
+      value.appendChild(amount);
+      item.appendChild(description);
+      item.appendChild(value);
       list.appendChild(item);
     });
   }
