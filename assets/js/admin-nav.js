@@ -6,6 +6,18 @@
   const views = { dashboard: el('view-dashboard'), financeiro: el('view-financeiro'), recibos: el('view-recibos'), precos: el('view-precos') };
   const buttons = [...nav.querySelectorAll('[data-go]')];
 
+  function openPrices() {
+    if (window.adminPrices && typeof window.adminPrices.show === 'function') {
+      window.adminPrices.show();
+      return;
+    }
+    views.dashboard.classList.add('hidden');
+    views.financeiro.classList.add('hidden');
+    views.recibos.classList.add('hidden');
+    views.precos.classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
   function go(target) {
     const current = Object.keys(views).find((k) => !views[k].classList.contains('hidden'));
     if (current === target) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -17,7 +29,7 @@
       views.precos.classList.add('hidden');
       el('btn-ir-recibos').click();
     } else if (target === 'precos') {
-      el('btn-ir-precos').click();
+      openPrices();
     } else {
       views.financeiro.classList.add('hidden');
       views.recibos.classList.add('hidden');
@@ -38,6 +50,7 @@
   }
 
   buttons.forEach((b) => b.addEventListener('click', () => go(b.dataset.go)));
+  el('btn-ir-precos').addEventListener('click', openPrices);
   nav.querySelector('[data-new]').addEventListener('click', () => el('btn-novo-agendamento').click());
 
   const obs = new MutationObserver(sync);

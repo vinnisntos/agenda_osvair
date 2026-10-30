@@ -155,6 +155,7 @@ body.admin .bg-black\/40 { background-color: rgba(0, 0, 0, 0.55); backdrop-filte
 .admin-nav .nav-new:hover { background: #7aa2ff; color: #fff; }
 /* a barra assume a navegação entre telas; o conteúdo ganha folga para não ficar por baixo dela */
 .header-nav { display: none !important; }
+#btn-ir-precos { display: inline-flex !important; visibility: visible !important; }
 #view-dashboard, #view-financeiro, #view-precos, #view-recibos { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
 .logout-btn { min-height: 2.75rem; padding: 0 0.75rem; border-radius: 999px; }
 .logout-btn:hover { color: var(--fg); background: var(--glass-2); }
