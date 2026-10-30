@@ -78,6 +78,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  el('btn-ir-precos').addEventListener('click', showPrices);
   el('btn-precos-ir-agendamentos').addEventListener('click', () => {
     el('view-precos').classList.add('hidden');
     el('view-dashboard').classList.remove('hidden');

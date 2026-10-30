@@ -17,7 +17,7 @@
       views.precos.classList.add('hidden');
       el('btn-ir-recibos').click();
     } else if (target === 'precos') {
-      window.adminPrices.show();
+      el('btn-ir-precos').click();
     } else {
       views.financeiro.classList.add('hidden');
       views.recibos.classList.add('hidden');
