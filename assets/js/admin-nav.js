@@ -3,7 +3,7 @@
 (function () {
   const el = (id) => document.getElementById(id);
   const nav = el('admin-nav');
-  const views = { dashboard: el('view-dashboard'), financeiro: el('view-financeiro'), recibos: el('view-recibos') };
+  const views = { dashboard: el('view-dashboard'), financeiro: el('view-financeiro'), recibos: el('view-recibos'), precos: el('view-precos') };
   const buttons = [...nav.querySelectorAll('[data-go]')];
 
   function go(target) {
@@ -11,12 +11,17 @@
     if (current === target) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if (target === 'financeiro') {
       views.recibos.classList.add('hidden');
+      views.precos.classList.add('hidden');
       el('btn-ir-financeiro').click(); // carrega o período na primeira vez
     } else if (target === 'recibos') {
+      views.precos.classList.add('hidden');
       el('btn-ir-recibos').click();
+    } else if (target === 'precos') {
+      window.adminPrices.show();
     } else {
       views.financeiro.classList.add('hidden');
       views.recibos.classList.add('hidden');
+      views.precos.classList.add('hidden');
       views.dashboard.classList.remove('hidden');
     }
     window.scrollTo({ top: 0 });
