@@ -187,9 +187,15 @@ body.admin input:not([type="checkbox"]):not([type="radio"]), body.admin select, 
   body.admin .fixed.inset-0 button[id^="btn-close"] { min-width: 2.75rem; min-height: 2.75rem; font-size: 1.5rem; }
   .admin-nav button { min-width: 4.25rem; padding: 0 0.5rem; }
 }
+@media (max-width: 480px) {
+  .admin-nav { width: calc(100vw - 1rem); max-width: calc(100vw - 1rem); justify-content: stretch; }
+  .admin-nav button:not(.nav-new) { flex: 1 1 0; min-width: 0; padding-left: .25rem; padding-right: .25rem; }
+  .admin-nav .nav-new { flex: 0 0 3.25rem; }
+}
 @media (max-width: 360px) {
   .admin-nav button span { font-size: 0.6875rem; }
   .admin-nav button { min-width: 3.75rem; }
+  .admin-nav button:not(.nav-new) { min-width: 0; }
 }
 
 /* "Sair" sempre no canto do cabeçalho, sem ocupar uma linha só para ele */
